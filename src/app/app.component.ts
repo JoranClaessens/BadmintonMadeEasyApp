@@ -40,4 +40,12 @@ export class MyApp {
   navigateCompetitions() {
     this.nav.push(HomeComponent);
   }
+
+  navigateAccountLogin() {
+    this.nav.push(HomeComponent);
+  }
+
+  navigateAccountCreate() {
+    this.nav.push(HomeComponent);
+  }
 }
