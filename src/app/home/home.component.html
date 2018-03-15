@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
+    <ion-title>Badminton Made Easy</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -12,15 +12,42 @@
   <ion-slides pager>
 
     <ion-slide>
-      <h2>Start een wedstrijd</h2>
+      <ion-card>
+        <ion-card-header class="bme-background-primary">
+          Start een badmintonwedstrijd!
+        </ion-card-header>
+        <ion-card-content>
+          <button ion-button block color="primary">Start wedstrijd</button>
+          <p style="font-size: 20px;">Of</p>
+          <button ion-button block color="primary">Zoek wedstrijd</button>
+        </ion-card-content>
+      </ion-card>
     </ion-slide>
 
     <ion-slide>
-      <h2>Start een toernooi</h2>
+      <ion-card>
+        <ion-card-header class="bme-background-secondary">
+          Start een toernooi!
+        </ion-card-header>
+        <ion-card-content>
+          <button ion-button block color="secondary">Start toernooi</button>
+          <p style="font-size: 20px;">Of</p>
+          <button ion-button block color="secondary">Zoek toernooi</button>
+        </ion-card-content>
+      </ion-card>
     </ion-slide>
 
     <ion-slide>
-      <h2>Start een competitiepartij</h2>
+      <ion-card>
+        <ion-card-header class="bme-background-danger">
+          Start een competitiepartij!
+        </ion-card-header>
+        <ion-card-content>
+          <button ion-button block color="danger">Start competitiepartij</button>
+          <p style="font-size: 20px;">Of</p>
+          <button ion-button block color="danger">Zoek competitiepartij</button>
+        </ion-card-content>
+      </ion-card>
     </ion-slide>
 
   </ion-slides>
