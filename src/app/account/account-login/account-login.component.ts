@@ -21,6 +21,7 @@ export class AccountLoginComponent implements OnInit {
       .subscribe(
         user => {
           if (user) {
+            this.showSuccess('Succesvol aangemeld!');
             this._userService.setUser(user);
             this._nav.push(HomeComponent);
           } else {
@@ -38,6 +39,16 @@ export class AccountLoginComponent implements OnInit {
       duration: 3000,
       position: 'top',
       cssClass: "toast-danger"
+    });
+    toast.present(toast);
+  }
+
+  showSuccess(message: string) {
+    let toast = this._toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top',
+      cssClass: "toast-success"
     });
     toast.present(toast);
   }
