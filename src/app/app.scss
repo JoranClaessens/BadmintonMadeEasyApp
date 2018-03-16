@@ -17,3 +17,9 @@
 .test {
     background-image: url('./assets/imgs/background-home.jpg'); background-repeat: no-repeat; background-size: 200% 100%;
 }
+
+.toast-danger {
+    > div{
+         background-color:#f53d3d!important;
+     }
+  }

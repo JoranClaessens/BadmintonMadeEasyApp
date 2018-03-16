@@ -4,6 +4,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomeComponent } from './home/home.component';
+import { AccountCreateComponent } from './account/account-create/account-create.component';
+import { AccountLoginComponent } from './account/account-login/account-login.component';
 
 @Component({
   templateUrl: 'app.html'
@@ -42,10 +44,10 @@ export class MyApp {
   }
 
   navigateAccountLogin() {
-    this.nav.push(HomeComponent);
+    this.nav.push(AccountLoginComponent);
   }
 
   navigateAccountCreate() {
-    this.nav.push(HomeComponent);
+    this.nav.push(AccountCreateComponent);
   }
 }
