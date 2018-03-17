@@ -19,11 +19,14 @@
       <button menuClose ion-item (click)="navigateCompetitions()">
         Competities
       </button>
-      <button menuClose ion-item (click)="navigateAccountLogin()">
+      <button menuClose ion-item *ngIf="!user" (click)="navigateAccountLogin()">
         Aanmelden
       </button>
-      <button menuClose ion-item (click)="navigateAccountCreate()">
+      <button menuClose ion-item *ngIf="!user" (click)="navigateAccountCreate()">
         Registreer
+      </button>
+      <button menuClose ion-item *ngIf="user" (click)="logout()">
+        Afmelden
       </button>
     </ion-list>
   </ion-content>

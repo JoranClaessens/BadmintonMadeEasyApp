@@ -14,16 +14,11 @@ export class UserService {
 
     constructor(private _http: Http, private storage: Storage) { }
 
-    getUser(): User {
-        const userId = this.storage.get('userId');
-        const email = this.storage.get('email');
-
-        /*if (userId && email) {
-            const user = new User(email, null);
-            user.id = +userId;
-            return user;
-        }*/
-        return null;
+    getUser(): Promise<string[]> {
+        return Promise.all([
+            this.storage.get('userId'),
+            this.storage.get('email')
+        ]);
     }
 
     setUser(user: User) {
