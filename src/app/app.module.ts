@@ -12,13 +12,16 @@ import { IonicStorageModule } from '@ionic/storage';
 import { AccountCreateComponent } from './account/account-create/account-create.component';
 import { UserService } from './account/user.service';
 import { AccountLoginComponent } from './account/account-login/account-login.component';
+import { MatchListComponent } from './matches/match-list/match-list.component';
+import { MatchService } from './matches/match.service';
 
 @NgModule({
   declarations: [
     MyApp,
     HomeComponent,
     AccountCreateComponent,
-    AccountLoginComponent
+    AccountLoginComponent,
+    MatchListComponent
 ],
   imports: [
     BrowserModule,
@@ -31,10 +34,12 @@ import { AccountLoginComponent } from './account/account-login/account-login.com
     MyApp,
     HomeComponent,
     AccountCreateComponent,
-    AccountLoginComponent
+    AccountLoginComponent,
+    MatchListComponent
   ],
   providers: [
     UserService,
+    MatchService,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

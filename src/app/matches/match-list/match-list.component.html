@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button left menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Wedstrijden</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content style="background-image: url('./assets/imgs/background-home.jpg'); background-repeat: no-repeat; background-size: 200% 100%;" padding>
+  <ion-slides pager>
+    <ion-slide style="height:100%; overflow-y: auto;">
+      <ion-card *ngFor="let match of matches" style="margin-top: 100px;">
+        <ion-card-header class="bme-background-primary">
+          {{match.player1}} vs {{match.player2}}
+        </ion-card-header>
+        <ion-card-content>
+          <button ion-button block color="primary">Start wedstrijd</button>
+          <p style="font-size: 20px;">Of</p>
+          <button ion-button block color="primary">Zoek wedstrijd</button>
+        </ion-card-content>
+      </ion-card>
+      <ion-card *ngFor="let match of matches">
+        <ion-card-header class="bme-background-primary">
+          {{match.player1}} vs {{match.player2}}
+        </ion-card-header>
+        <ion-card-content>
+          <button ion-button block color="primary">Start wedstrijd</button>
+          <p style="font-size: 20px;">Of</p>
+          <button ion-button block color="primary">Zoek wedstrijd</button>
+        </ion-card-content>
+      </ion-card>
+      <ion-card *ngFor="let match of matches">
+        <ion-card-header class="bme-background-primary">
+          {{match.player1}} vs {{match.player2}}
+        </ion-card-header>
+        <ion-card-content>
+          <button ion-button block color="primary">Start wedstrijd</button>
+          <p style="font-size: 20px;">Of</p>
+          <button ion-button block color="primary">Zoek wedstrijd</button>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-card>
+        <ion-card-header class="bme-background-primary">
+          Start een badmintonwedstrijd!
+        </ion-card-header>
+        <ion-card-content>
+          <button ion-button block color="primary">Start wedstrijd</button>
+          <p style="font-size: 20px;">Of</p>
+          <button ion-button block color="primary">Zoek wedstrijd</button>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

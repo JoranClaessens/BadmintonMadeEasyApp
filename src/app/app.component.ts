@@ -8,6 +8,7 @@ import { AccountCreateComponent } from './account/account-create/account-create.
 import { AccountLoginComponent } from './account/account-login/account-login.component';
 import { User } from './account/user';
 import { UserService } from './account/user.service';
+import { MatchListComponent } from './matches/match-list/match-list.component';
 
 @Component({
   templateUrl: 'app.html'
@@ -49,7 +50,7 @@ export class MyApp implements OnInit {
   }
 
   navigateMatches() {
-    this.nav.push(HomeComponent);
+    this.nav.push(MatchListComponent);
   }
 
   navigateTournaments() {
