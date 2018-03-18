@@ -4,6 +4,7 @@ import { BadmintonMatch } from '../badminton-match';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../../account/user.service';
 import { Nav, Slides } from 'ionic-angular';
+import { HomeComponent } from '../../home/home.component';
 
 @Component({
   selector: 'bme-match-list',
@@ -78,6 +79,10 @@ export class MatchListComponent implements OnInit {
       this.customWarningMessage = 'U moet zich eerst aanmelden of registreren voordat u een wedstrijd kan aanmaken!';
     }
   }*/
+
+  matchDetail(id: number) {
+    this._nav.push(HomeComponent);
+  }
 
   convertToMinutes() {
     for (const match of this.matches) {
