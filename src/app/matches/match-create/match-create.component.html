@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button left menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Wedstrijd aanmaken</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label stacked>Titel</ion-label>
+      <ion-input type="text" [(ngModel)]="matchTitle"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Type match</ion-label>
+      <ion-select [(ngModel)]="selectedMatchType">
+        <ion-option value="NONE" selected>Kies een type...</ion-option>
+        <ion-option value="MEN_SINGLE">Heren enkel</ion-option>
+        <ion-option value="WOMEN_SINGLE">Vrouwen enkel</ion-option>
+        <ion-option value="MEN_DOUBLE">Heren dubbel</ion-option>
+        <ion-option value="WOMEN_DOUBLE">Vrouwen dubbel</ion-option>
+        <ion-option value="MIX">Mix</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="selectedMatchType !== 'NONE'">
+      <ion-label stacked>Team 1</ion-label>
+      <ion-input type="text" placeholder="Speler 1" [(ngModel)]="player1"></ion-input>
+      <ion-input *ngIf="selectedMatchType === 'MEN_DOUBLE' || selectedMatchType === 'WOMEN_DOUBLE' || selectedMatchType === 'MIX'"
+        type="text" placeholder="Speler 3" [(ngModel)]="player3"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="selectedMatchType !== 'NONE'" style="text-align: center">
+      Vs
+    </ion-item>
+    <ion-item *ngIf="selectedMatchType !== 'NONE'">
+      <ion-label stacked>Team 2</ion-label>
+      <ion-input type="text" placeholder="Speler 2" [(ngModel)]="player2"></ion-input>
+      <ion-input *ngIf="selectedMatchType === 'MEN_DOUBLE' || selectedMatchType === 'WOMEN_DOUBLE' || selectedMatchType === 'MIX'"
+        type="text" placeholder="Speler 4" [(ngModel)]="player4"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <button ion-button color="light" (click)="createLocation = !createLocation">Locatie toevoegen</button>
+      <span> *Optioneel</span>
+    </ion-item>
+    <div *ngIf="createLocation">
+      <ion-item>
+        <ion-label stacked>Straat + Huisnummer</ion-label>
+        <ion-input type="text" [(ngModel)]="street"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Postcode + Gemeente</ion-label>
+        <ion-input type="text" [(ngModel)]="city"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Terrein nummer</ion-label>
+        <ion-input type="text" [(ngModel)]="terrainNumber"></ion-input>
+      </ion-item>
+    </div>
+
+    <ion-item>
+      <button ion-button color="primary" block large (click)="createMatch()">Opslaan</button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

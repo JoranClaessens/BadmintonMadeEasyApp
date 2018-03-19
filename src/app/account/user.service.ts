@@ -9,7 +9,7 @@ import { Http } from '@angular/http';
 
 @Injectable()
 export class UserService {
-    private userUrl = 'http://localhost:8080/api/users';
+    private userUrl = 'http://192.168.0.184:8080/api/users';
     currentUser: User;
 
     constructor(private _http: Http, private storage: Storage) { }

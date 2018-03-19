@@ -9,7 +9,7 @@ import { Http } from '@angular/http';
 
 @Injectable()
 export class MatchService {
-    private matchUrl = 'http://localhost:8080/api/matches';
+    private matchUrl = 'http://192.168.0.184:8080/api/matches';
 
     constructor(private _http: Http) { }
 

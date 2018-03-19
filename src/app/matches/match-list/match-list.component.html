@@ -10,17 +10,17 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <ion-list (swipe)="swipeEvent($event)">
     <ion-grid>
       <ion-row>
-        <ion-col style="font-size: 18px; text-align: center; background: #488aff">
+        <ion-col (click)="loadAllMatches()" style="font-size: 18px; text-align: center" [ngStyle]="{'background': selectedMatchTab === 1 ? '#488aff' : '#679fff'}">
           <a style="color: white">Alle wedstrijden</a>
         </ion-col>
-        <ion-col style="font-size: 18px; text-align: center; background: #679fff">
+        <ion-col (click)="loadUserMatches()" style="font-size: 18px; text-align: center" [ngStyle]="{'background': selectedMatchTab === 2 ? '#488aff' : '#679fff'}">
           <a style="color: white">Jouw wedstrijden</a>
-          <ion-badge item-end color="danger">2</ion-badge>
+          <ion-badge item-end color="danger">{{userMatchesCount}}</ion-badge>
         </ion-col>
-        <ion-col style="font-size: 18px; text-align: center; background: #ff9900">
+        <ion-col (click)="createMatch()" style="font-size: 18px; text-align: center; background: #ff9900">
           <a style="color: white">Wedstrijd aanmaken</a>
         </ion-col>
       </ion-row>
