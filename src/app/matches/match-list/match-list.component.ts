@@ -6,6 +6,7 @@ import { UserService } from '../../account/user.service';
 import { Nav, Slides, ToastController } from 'ionic-angular';
 import { HomeComponent } from '../../home/home.component';
 import { MatchCreateComponent } from '../match-create/match-create.component';
+import { MatchDetailComponent } from '../match-detail/match-detail.component';
 
 @Component({
   selector: 'bme-match-list',
@@ -95,7 +96,7 @@ export class MatchListComponent implements OnInit {
   }
 
   matchDetail(id: number) {
-    this._nav.push(HomeComponent); //MatchDetailComponent
+    this._nav.push(MatchDetailComponent, { 'id': id} );
   }
 
   convertToMinutes() {
