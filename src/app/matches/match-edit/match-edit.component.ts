@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatchService } from '../match.service';
 import { BadmintonMatch } from '../badminton-match';
-import { HttpErrorResponse } from '@angular/common/http';
 import { NavParams, ToastController } from 'ionic-angular';
 
 @Component({
@@ -9,12 +8,10 @@ import { NavParams, ToastController } from 'ionic-angular';
   templateUrl: './match-edit.component.html'
 })
 export class MatchEditComponent implements OnInit {
-  matchUpdated = false;
   anyChanges = false;
   changeLocation = false;
   originalMatch: BadmintonMatch;
   match: BadmintonMatch;
-  errorMessage: HttpErrorResponse;
 
   constructor(private _matchService: MatchService, private _navParams: NavParams, private _toastCtrl: ToastController) { }
 

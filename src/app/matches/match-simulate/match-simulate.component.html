@@ -1,0 +1,148 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button left menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{match?.title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="match">
+    <ion-card-header class="bme-background-primary">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-5 style="text-align: right; font-size: 15px">
+            {{match.player1}}
+            <br>{{match.player3}}
+          </ion-col>
+          <ion-col center col-2 style="text-align: center; font-size: 15px">
+            vs
+          </ion-col>
+          <ion-col col-5 style="text-align: left; font-size: 15px">
+            {{match.player2}}
+            <br>{{match.player4}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="card-body">
+        <h4 class="card-title" style="font-weight: normal; margin-bottom: -20px;">
+          <div style="text-align: center; font-size: 50px">
+            <button ion-button style="font-size: 10px; height: 30px; background-color: white; width: 5px; color: black; margin-bottom: 30px;"
+              [disabled]="currentGame.pointsTeam1 === 0" (click)="pointsTeam1Less()">
+              <ion-icon name="arrow-dropdown"></ion-icon>
+            </button>
+            <span [ngStyle]="{'font-weight': getFontWeight(match.games[match.games.length - 1].pointsTeam1, match.games[match.games.length - 1].pointsTeam2)}">{{match.games[match.games.length - 1].pointsTeam1}}</span>
+            <button ion-button style="font-size: 10px; height: 30px; background-color: white; width: 5px; color: black; margin-bottom: 30px;"
+              [disabled]="gameFinished || !match.matchCreated" (click)="pointsTeam1More()">
+              <ion-icon name="arrow-dropup"></ion-icon>
+            </button>
+            <span> - </span>
+            <button ion-button style="font-size: 10px; height: 30px; background-color: white; width: 5px; color: black; margin-bottom: 30px;"
+              [disabled]="currentGame.pointsTeam1 === 0" (click)="pointsTeam2Less()">
+              <ion-icon name="arrow-dropdown"></ion-icon>
+            </button>
+            <span [ngStyle]="{'font-weight': getFontWeight(match.games[match.games.length - 1].pointsTeam2, match.games[match.games.length - 1].pointsTeam1)}">{{match.games[match.games.length - 1].pointsTeam2}}</span>
+            <button ion-button style="font-size: 10px; height: 30px; background-color: white; width: 5px; color: black; margin-bottom: 30px;"
+              [disabled]="gameFinished || !match.matchCreated" (click)="pointsTeam2More()">
+              <ion-icon name="arrow-dropup"></ion-icon>
+            </button>
+          </div>
+        </h4>
+        <div *ngFor="let game of match.games" style="text-align: center; font-size: 15px">
+          <span [ngStyle]="{'font-weight': getFontWeight(game.pointsTeam1, game.pointsTeam2)}">{{game.pointsTeam1}}</span>
+          <span> - </span>
+          <span [ngStyle]="{'font-weight': getFontWeight(game.pointsTeam2, game.pointsTeam1)}">{{game.pointsTeam2}}</span>
+        </div>
+        <div *ngIf="gameFinished && !matchFinished" style="text-align: center; font-size: 15px">
+          <button ion-button small color="secondary" (click)="newGame()">
+            <ion-icon name="add"></ion-icon>&nbsp;Nieuw set</button>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <div style="position: relative;">
+    <img style="width: 100%; height: 205px;" [src]="courtImage" />
+
+    <div *ngIf="match">
+      <div *ngIf="match.type === 'MEN_SINGLE' || match.type === 'WOMEN_SINGLE'">
+        <div [ngClass]="{'bottom-left': !match.player1Left, 'top-left': match.player1Left}">
+          <button ion-button small color="dark" [ngClass]="{'btn-success': match.serviceTeam1, 'btn-dark': !match.serviceTeam1}" style="font-size: 10px"
+            (click)="updateService(1)">{{match.player1}}</button>
+          <button ion-button style="font-size: 10px; height: 20px; background-color: white; width: 5px; color: black" (click)="switchSides(1)">
+            <ion-icon name="code"></ion-icon>
+          </button>
+        </div>
+        <div [ngClass]="{'top-right': !match.player2Left, 'bottom-right': match.player2Left}">
+          <button ion-button small color="dark" [ngClass]="{'btn-success': !match.serviceTeam1, 'btn-dark': match.serviceTeam1}" style="font-size: 10px"
+            (click)="updateService(2)">{{match.player2}}</button>
+          <button ion-button style="font-size: 10px; height: 20px; background-color: white; width: 5px; color: black" (click)="switchSides(2)">
+            <ion-icon name="code"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <div *ngIf="match.type !== 'MEN_SINGLE' && match.type !== 'WOMEN_SINGLE'">
+        <div [ngClass]="{'bottom-left': !match.player1Left, 
+          'top-left': match.player1Left}">
+          <button ion-button small color="dark" [ngClass]="{'btn-success': (match.serviceTeam1 && this.currentGame.pointsTeam1 % 2 > 0 && match.player1Left)
+                                          || (match.serviceTeam1 && this.currentGame.pointsTeam1 % 2 === 0 && !match.player1Left),
+                              'btn-dark': (match.serviceTeam1 && this.currentGame.pointsTeam1 % 2 > 0 && !match.player1Left)
+                                          || (match.serviceTeam1 && this.currentGame.pointsTeam1 % 2 === 0 && match.player1Left)
+                                          || !match.serviceTeam1}" style="font-size: 10px" (click)="updateService(1)">{{match.player1}}</button>
+          <button ion-button style="font-size: 10px; height: 20px; background-color: white; width: 5px; color: black" (click)="switchSides(1)">
+            <ion-icon name="code"></ion-icon>
+          </button>
+        </div>
+        <div [ngClass]="{'bottom-left': match.player1Left, 
+          'top-left': !match.player1Left}">
+          <button ion-button small color="dark" [ngClass]="{'btn-success': (match.serviceTeam1 && this.currentGame.pointsTeam1 % 2 > 0 && !match.player1Left)
+                                          || (match.serviceTeam1 && this.currentGame.pointsTeam1 % 2 === 0 && match.player1Left),
+                              'btn-dark': (match.serviceTeam1 && this.currentGame.pointsTeam1 % 2 > 0 && match.player1Left)
+                                          || (match.serviceTeam1 && this.currentGame.pointsTeam1 % 2 === 0 && !match.player1Left)
+                                          || !match.serviceTeam1}" style="font-size: 10px" (click)="updateService(1)">{{match.player3}}</button>
+          <button ion-button style="font-size: 10px; height: 20px; background-color: white; width: 5px; color: black" (click)="switchSides(1)">
+            <ion-icon name="code"></ion-icon>
+          </button>
+        </div>
+        <div [ngClass]="{'top-right': !match.player2Left, 
+          'bottom-right': match.player2Left}">
+          <button ion-button small color="dark" [ngClass]="{'btn-success': (!match.serviceTeam1 && this.currentGame.pointsTeam2 % 2 > 0 && match.player2Left)
+                                          || (!match.serviceTeam1 && this.currentGame.pointsTeam2 % 2 === 0 && !match.player2Left),
+                              'btn-dark': (!match.serviceTeam1 && this.currentGame.pointsTeam2 % 2 > 0 && !match.player2Left)
+                                          || (!match.serviceTeam1 && this.currentGame.pointsTeam2 % 2 === 0 && match.player2Left)
+                                          || match.serviceTeam1}" style="font-size: 10px" (click)="updateService(2)">{{match.player2}}</button>
+          <button ion-button style="font-size: 10px; height: 20px; background-color: white; width: 5px; color: black" (click)="switchSides(2)">
+            <ion-icon name="code"></ion-icon>
+          </button>
+        </div>
+        <div [ngClass]="{'top-right': match.player2Left, 
+          'bottom-right': !match.player2Left}">
+          <button ion-button small color="dark" [ngClass]="{'btn-success': (!match.serviceTeam1 && this.currentGame.pointsTeam2 % 2 > 0 && !match.player2Left)
+                                          || (!match.serviceTeam1 && this.currentGame.pointsTeam2 % 2 === 0 && match.player2Left),
+                              'btn-dark': (!match.serviceTeam1 && this.currentGame.pointsTeam2 % 2 > 0 && match.player2Left)
+                                          || (!match.serviceTeam1 && this.currentGame.pointsTeam2 % 2 === 0 && !match.player2Left)
+                                          || match.serviceTeam1}" style="font-size: 10px" (click)="updateService(2)">{{match.player4}}</button>
+          <button ion-button style="font-size: 10px; height: 20px; background-color: white; width: 5px; color: black" (click)="switchSides(2)">
+            <ion-icon name="code"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ion-card *ngIf="match">
+    <ion-card-header class="bme-background-dark">
+      Acties
+    </ion-card-header>
+    <ion-card-content>
+      <div>
+        <button ion-button block color="primary" [disabled]="match.matchCreated" style="font-size: 12px;" (click)="startMatch()">Start wedstrijd</button>
+        <button ion-button block color="danger" [disabled]="!matchFinished || match.matchFinished" style="font-size: 12px;" (click)="endMatch()">Einde wedstrijd</button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

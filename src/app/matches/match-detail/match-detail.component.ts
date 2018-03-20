@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatchService } from '../match.service';
 import { BadmintonMatch } from '../badminton-match';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Game } from '../game';
 import { UserService } from '../../account/user.service';
 import { NavParams, Nav, ToastController } from 'ionic-angular';
 import { MatchListComponent } from '../match-list/match-list.component';
 import { MatchEditComponent } from '../match-edit/match-edit.component';
+import { MatchSimulateComponent } from '../match-simulate/match-simulate.component';
 
 @Component({
   selector: 'bme-match-detail',
@@ -19,7 +19,6 @@ export class MatchDetailComponent implements OnInit {
   userMatches: BadmintonMatch[];
   match: BadmintonMatch;
   currentGame: Game;
-  errorMessage: HttpErrorResponse;
 
   constructor(private _userService: UserService, private _matchService: MatchService,
     private _navParams: NavParams, private _nav: Nav, private _toastCtrl: ToastController) { }
@@ -70,11 +69,11 @@ export class MatchDetailComponent implements OnInit {
   }
 
   simulateMatch() {
-    // this._router.navigate(['/matches/simulate/' + this.match.id]);
+    this._nav.push(MatchSimulateComponent, { 'id': this.match.id })
   }
 
   editMatch() {
-    this._nav.push(MatchEditComponent, { 'id': this.match.id } );
+    this._nav.push(MatchEditComponent, { 'id': this.match.id });
   }
 
   deleteMatch() {
@@ -93,15 +92,18 @@ export class MatchDetailComponent implements OnInit {
   checkGame() {
     if (!this.stopPolling) {
       setTimeout(() => {
-        this._matchService.getMatchById(this.match.id)
-          .subscribe(
-            badmintonmatch => {
-              this.match = badmintonmatch;
-              this.checkGame();
-            },
-            error => {
-              this.showError(error);
-            });
+        if (this.match.id) {
+          this._matchService.getMatchById(this.match.id)
+            .subscribe(
+              badmintonmatch => {
+                this.match = badmintonmatch;
+                this.checkGame();
+              },
+              error => {
+                this.checkGame();
+                this.showError(error);
+              });
+        }
       }, 1000);
     }
   }

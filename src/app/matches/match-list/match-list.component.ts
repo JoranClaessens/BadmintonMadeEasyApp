@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatchService } from '../match.service';
 import { BadmintonMatch } from '../badminton-match';
-import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../../account/user.service';
-import { Nav, Slides, ToastController } from 'ionic-angular';
+import { Nav, ToastController } from 'ionic-angular';
 import { HomeComponent } from '../../home/home.component';
 import { MatchCreateComponent } from '../match-create/match-create.component';
 import { MatchDetailComponent } from '../match-detail/match-detail.component';
@@ -13,13 +12,10 @@ import { MatchDetailComponent } from '../match-detail/match-detail.component';
   templateUrl: './match-list.component.html'
 })
 export class MatchListComponent implements OnInit {
-  @ViewChild(Slides) slides: Slides;
-
   loggedIn = false;
   selectedMatchTab: number;
   userMatchesCount = 0;
   matches: BadmintonMatch[];
-  errorMessage: HttpErrorResponse;
   customWarningMessage: string;
   currentDate: Date = new Date();
 

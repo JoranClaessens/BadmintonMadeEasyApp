@@ -31,7 +31,7 @@
       <p style="text-align: right" *ngIf="match.matchCreated && !match.matchFinished && match.duration === '0'">&lt; 1 minuut bezig...</p>
       <p style="text-align: right" *ngIf="match.matchCreated && !match.matchFinished && match.duration === 1">1 minuut bezig...</p>
       <p style="text-align: right" *ngIf="!match.matchCreated">Moet nog starten...</p>
-      <p style="text-align: right" *ngIf="match.matchFinished">Wedstrijd afgelopen op {{match.matchFinished | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+      <p style="text-align: right" *ngIf="match.matchFinished">{{match.matchFinished | date:'dd/MM/yyyy HH:mm:ss'}}</p>
 
       <ion-grid>
         <ion-row>

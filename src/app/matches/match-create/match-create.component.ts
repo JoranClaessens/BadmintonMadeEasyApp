@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BadmintonMatch } from '../badminton-match';
 import { MatchService } from '../match.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../../account/user.service';
 import { ToastController } from 'ionic-angular';
 
