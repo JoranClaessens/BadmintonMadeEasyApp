@@ -1,19 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatchService } from '../match.service';
 import { BadmintonMatch } from '../badminton-match';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Game } from '../game';
 import { UserService } from '../../account/user.service';
-// tslint:disable-next-line:import-blacklist
-import { Observable } from 'rxjs/Rx';
-import { NavParams, Nav } from 'ionic-angular';
+import { NavParams, Nav, ToastController } from 'ionic-angular';
 import { MatchListComponent } from '../match-list/match-list.component';
+import { MatchEditComponent } from '../match-edit/match-edit.component';
 
 @Component({
   selector: 'bme-match-detail',
   templateUrl: './match-detail.component.html'
 })
-export class MatchDetailComponent implements OnInit, OnDestroy {
+export class MatchDetailComponent implements OnInit {
   courtImage = 'assets/imgs/badminton-court.jpg';
   hasAuthority = false;
   stopPolling = false;
@@ -23,7 +22,7 @@ export class MatchDetailComponent implements OnInit, OnDestroy {
   errorMessage: HttpErrorResponse;
 
   constructor(private _userService: UserService, private _matchService: MatchService,
-    private _navParams: NavParams, private _nav: Nav) { }
+    private _navParams: NavParams, private _nav: Nav, private _toastCtrl: ToastController) { }
 
   ngOnInit() {
     const id = +this._navParams.get('id');
@@ -38,7 +37,8 @@ export class MatchDetailComponent implements OnInit, OnDestroy {
                 this.loadMatch(id);
               },
               error => {
-                this.errorMessage = <any>error;
+                this.loadMatch(id);
+                this.showError(error);
               });
         } else {
           this.loadMatch(id);
@@ -47,7 +47,7 @@ export class MatchDetailComponent implements OnInit, OnDestroy {
     this.checkGame();
   }
 
-  ngOnDestroy() {
+  ionViewDidLeave() {
     this.stopPolling = true;
   }
 
@@ -65,7 +65,7 @@ export class MatchDetailComponent implements OnInit, OnDestroy {
           }
         },
         error => {
-          this.errorMessage = <any>error;
+          this.showError(error);
         });
   }
 
@@ -74,7 +74,7 @@ export class MatchDetailComponent implements OnInit, OnDestroy {
   }
 
   editMatch() {
-    // this._router.navigate(['/matches/edit/' + this.match.id]);
+    this._nav.push(MatchEditComponent, { 'id': this.match.id } );
   }
 
   deleteMatch() {
@@ -86,7 +86,7 @@ export class MatchDetailComponent implements OnInit, OnDestroy {
           }
         },
         error => {
-          this.errorMessage = <any>error;
+          this.showError(error);
         });
   }
 
@@ -100,7 +100,7 @@ export class MatchDetailComponent implements OnInit, OnDestroy {
               this.checkGame();
             },
             error => {
-              this.errorMessage = <any>error;
+              this.showError(error);
             });
       }, 1000);
     }
@@ -111,5 +111,15 @@ export class MatchDetailComponent implements OnInit, OnDestroy {
       return 'bold';
     }
     return null;
+  }
+
+  showError(message: string) {
+    let toast = this._toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top',
+      cssClass: "toast-danger"
+    });
+    toast.present(toast);
   }
 }

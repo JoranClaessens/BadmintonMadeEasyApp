@@ -16,6 +16,7 @@ import { MatchListComponent } from './matches/match-list/match-list.component';
 import { MatchService } from './matches/match.service';
 import { MatchCreateComponent } from './matches/match-create/match-create.component';
 import { MatchDetailComponent } from './matches/match-detail/match-detail.component';
+import { MatchEditComponent } from './matches/match-edit/match-edit.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MatchDetailComponent } from './matches/match-detail/match-detail.compon
     AccountLoginComponent,
     MatchListComponent,
     MatchCreateComponent,
-    MatchDetailComponent
+    MatchDetailComponent,
+    MatchEditComponent
 ],
   imports: [
     BrowserModule,
@@ -41,7 +43,8 @@ import { MatchDetailComponent } from './matches/match-detail/match-detail.compon
     AccountLoginComponent,
     MatchListComponent,
     MatchCreateComponent,
-    MatchDetailComponent
+    MatchDetailComponent,
+    MatchEditComponent
   ],
   providers: [
     UserService,

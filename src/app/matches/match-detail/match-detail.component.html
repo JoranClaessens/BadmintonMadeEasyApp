@@ -45,7 +45,7 @@
       </div>
     </ion-card-content>
   </ion-card>
-  <img style="width: 100%; height: 205px;" [src]="courtImage"/>
+  <img style="width: 100%; height: 205px;" [src]="courtImage" />
 
   <div *ngIf="match">
     <div *ngIf="match.type === 'MEN_SINGLE' || match.type === 'WOMEN_SINGLE'">
@@ -93,4 +93,17 @@
       </div>
     </div>
   </div>
+  <ion-card *ngIf="match && hasAuthority">
+    <ion-card-header class="bme-background-dark">
+      Acties
+    </ion-card-header>
+    <ion-card-content>
+      <div>
+        <button ion-button block color="primary" style="font-size: 12px;" [disabled]="match.matchFinished"
+          (click)="simulateMatch()">Simuleer wedstrijd</button>
+        <button ion-button block color="secondary" style="font-size: 12px;" (click)="editMatch()">Gegevens aanpassen</button>
+        <button ion-button block color="danger" style="font-size: 12px;" (click)="deleteMatch()">Verwijder wedstrijd</button>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

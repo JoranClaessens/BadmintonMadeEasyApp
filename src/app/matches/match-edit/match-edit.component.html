@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button left menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Wedstrijd aanpassen</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="match">
+    <ion-item>
+      <ion-label stacked>Titel</ion-label>
+      <ion-input (keyup)="checkForChanges()" type="text" [(ngModel)]="match.title"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Type match</ion-label>
+      <ion-select [(ngModel)]="match.type" disabled="true">
+        <ion-option value="MEN_SINGLE">Heren enkel</ion-option>
+        <ion-option value="WOMEN_SINGLE">Vrouwen enkel</ion-option>
+        <ion-option value="MEN_DOUBLE">Heren dubbel</ion-option>
+        <ion-option value="WOMEN_DOUBLE">Vrouwen dubbel</ion-option>
+        <ion-option value="MIX">Mix</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Team 1</ion-label>
+      <ion-input (keyup)="checkForChanges()" type="text" placeholder="Speler 1" [(ngModel)]="match.player1"></ion-input>
+      <ion-input (keyup)="checkForChanges()" *ngIf="match.type === 'MEN_DOUBLE' || match.type === 'WOMEN_DOUBLE' || match.type === 'MIX'"
+        type="text" placeholder="Speler 3" [(ngModel)]="match.player3"></ion-input>
+    </ion-item>
+    <ion-item style="text-align: center">
+      Vs
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Team 2</ion-label>
+      <ion-input (keyup)="checkForChanges()" type="text" placeholder="Speler 2" [(ngModel)]="match.player2"></ion-input>
+      <ion-input (keyup)="checkForChanges()" *ngIf="match.type === 'MEN_DOUBLE' || match.type === 'WOMEN_DOUBLE' || match.type === 'MIX'"
+        type="text" placeholder="Speler 4" [(ngModel)]="match.player4"></ion-input>
+    </ion-item>
+
+    <ion-item *ngFor="let game of match.games">
+      <ion-label stacked>Set {{game.gamePk.gameId}}</ion-label>
+      <ion-input (keyup)="checkForChanges()" (change)="checkForChanges()" type="number" style="text-align: center" name="{{'pointsTeam1Set' + game.gamePk.gameId}}"
+        [(ngModel)]="game.pointsTeam1"></ion-input>
+      <ion-input (keyup)="checkForChanges()" (change)="checkForChanges()" type="number" style="text-align: center" name="{{'pointsTeam2Set' + game.gamePk.gameId}}"
+        [(ngModel)]="game.pointsTeam2"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <button ion-button color="light" (click)="changeLocation = !changeLocation">Locatie aanpassen</button>
+    </ion-item>
+    <div *ngIf="changeLocation">
+      <ion-item>
+        <ion-label stacked>Straat + Huisnummer</ion-label>
+        <ion-input (keyup)="checkForChanges()" type="text" [(ngModel)]="match.street"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Postcode + Gemeente</ion-label>
+        <ion-input (keyup)="checkForChanges()" type="text" [(ngModel)]="match.city"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Terrein nummer</ion-label>
+        <ion-input (keyup)="checkForChanges()" type="text" [(ngModel)]="match.terrainNumber"></ion-input>
+      </ion-item>
+    </div>
+
+    <ion-item *ngIf="anyChanges">
+      <button ion-button color="primary" block large (click)="updateMatch()">Opslaan</button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
