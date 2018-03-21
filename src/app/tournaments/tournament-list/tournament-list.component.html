@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button left menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Toernooien</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list (swipe)="swipeEvent($event)">
+    <ion-grid>
+      <ion-row>
+        <ion-col (click)="loadAllTournaments()" style="font-size: 18px; text-align: center" [ngStyle]="{'background': selectedTournamentTab === 1 ? '#488aff' : '#679fff'}">
+          <a style="color: white">Alle toernooien</a>
+        </ion-col>
+        <ion-col (click)="loadUserTournaments()" style="font-size: 18px; text-align: center" [ngStyle]="{'background': selectedTournamentTab === 2 ? '#488aff' : '#679fff'}">
+          <a style="color: white">Jouw toernooien</a>
+          <ion-badge item-end color="danger">{{userTournamentsCount}}</ion-badge>
+        </ion-col>
+        <ion-col (click)="createTournament()" style="font-size: 18px; text-align: center; background: #ff9900">
+          <a style="color: white">toernooi aanmaken</a>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-item *ngFor="let tournament of tournaments" (click)="tournamentDetail(tournament.id)">
+      <h1>{{tournament.title}}</h1>
+      <p>{{tournament.startDate | date : 'dd/MM/yyyy'}} - {{tournament.endDate | date : 'dd/MM/yyyy'}}</p>
+    </ion-item>
+  </ion-list>
+</ion-content>

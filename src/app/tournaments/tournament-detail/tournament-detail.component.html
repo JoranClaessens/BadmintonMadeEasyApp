@@ -1,0 +1,230 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button left menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{tournament?.title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-scroll scrollX="true" style="height: 20000px;">
+    <div *ngIf="tournament">
+      <h1>{{tournament.title}}</h1>
+      <p *ngIf="tournament.street && tournament.city" class="text text-primary">{{tournament.street}}, {{tournament.city}}</p>
+      <div class="row">
+        <div class="col-md-9">
+          <main>
+            <ul *ngFor="let round of rounds" class="round round-{{round}}">
+              <li *ngIf="round !== rounds.length" class="spacer">&nbsp;</li>
+              <ng-container *ngFor="let match of getMatchRounds(round)">
+                <ng-container *ngIf="match && (tournament.type === 'MEN_SINGLE' || tournament.type === 'WOMEN_SINGLE')">
+                  <li class="game game-top">
+
+                    <ng-container *ngIf="tournament.scheduled && round !== 1 && getMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1,  match * 2 - 1, 0), null, null)
+                            && !getMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1,  match * 2 - 1, 0), null, null).matchFinished">
+                      <a (click)="viewMatch(getMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1,  match * 2 - 1, 0), null, null).id)">Bekijk wedstrijd</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="tournament.scheduled && round !== 1 && !getMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1,  match * 2 - 1, 0), null, null)
+                            && getPlayer(round - 1, match * 2 - 1, 1) && getPlayer(round - 1,  match * 2 - 1, 0) && hasAuthority">
+                      <a (click)="startMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1,  match * 2 - 1, 0), null, null)">Start wedstrijd</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="!tournament.scheduled && round === 1">
+                      <input (change)="updateTournamentPlayer($event.target.value, round, match, 1, match * 2 - 1)" type="text" style="height: 18px; width: 140px; font-size: 13px;"
+                        placeholder="Speler {{match * 2 - 1}}" value="{{getPlayer(round, match, 1)}}" />
+                    </ng-container>
+
+                    <ng-container *ngIf="tournament.scheduled && getPlayer(round, match, 1)">
+                      {{getPlayer(round, match, 1)}}
+                    </ng-container>
+
+                    <span>&nbsp;</span>
+                  </li>
+
+                  <li *ngIf="getGamePoints(getMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1,  match * 2 - 1, 0), null, null))"
+                    class="game game-bottom" style="margin-bottom: -20px; border-style: none;">
+                    {{getGamePoints(getMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1, match * 2 - 1, 0), null, null))}}
+                  </li>
+
+                  <li class="game game-spacer">&nbsp;</li>
+
+                  <li class="game game-top" style="margin-top: -20px;">
+
+                    <ng-container *ngIf="tournament.scheduled && round !== 1 && getMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1,  match * 2, 0), null, null)
+                              && !getMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1,  match * 2, 0), null, null).matchFinished">
+                      <a (click)="viewMatch(getMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1,  match * 2, 0), null, null).id)">Bekijk wedstrijd</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="tournament.scheduled && round !== 1 && !getMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1,  match * 2, 0), null, null)
+                            && getPlayer(round - 1, match * 2, 1) && getPlayer(round - 1,  match * 2, 0) && hasAuthority">
+                      <a style="margin-top: -10px;" (click)="startMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1,  match * 2, 0), null, null)">Start wedstrijd</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="!tournament.scheduled && round === 1">
+                      <input (change)="updateTournamentPlayer($event.target.value, round, match, 0, match * 2)" type="text" style="height: 18px; width: 140px; font-size: 13px;"
+                        placeholder="Speler {{match * 2}}" value="{{getPlayer(round, match, 0)}}" />
+                    </ng-container>
+
+                    <ng-container *ngIf="tournament.scheduled && getPlayer(round, match, 0)">
+                      {{getPlayer(round, match, 0)}}
+                    </ng-container>
+
+                    <span>&nbsp;</span>
+                  </li>
+
+                  <li *ngIf="getGamePoints(getMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1,  match * 2, 0), null, null))"
+                    class="game game-bottom" style="margin-bottom: -20px; border-style: none;">
+                    {{getGamePoints(getMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1, match * 2, 0), null, null))}}
+                  </li>
+
+                  <li class="spacer">&nbsp;</li>
+                </ng-container>
+                <ng-container *ngIf="match && tournament.type !== 'MEN_SINGLE' && tournament.type !== 'WOMEN_SINGLE'">
+                  <li class="game game-top">
+
+                    <ng-container *ngIf="tournament.scheduled && round !== 1 
+                            && getMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1,  match * 2 - 1, 3), getPlayer(round - 1,  match * 2 - 1, 2), getPlayer(round - 1,  match * 2 - 1, 0))
+                            && !getMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1,  match * 2 - 1, 3), getPlayer(round - 1,  match * 2 - 1, 2), getPlayer(round - 1,  match * 2 - 1, 0)).matchFinished">
+                      <a (click)="viewMatch(getMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1,  match * 2 - 1, 3), getPlayer(round - 1,  match * 2 - 1, 2), getPlayer(round - 1,  match * 2 - 1, 0)).id)">Bekijk wedstrijd</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="tournament.scheduled && round !== 1 && !getMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1,  match * 2 - 1, 3), getPlayer(round - 1,  match * 2 - 1, 2), getPlayer(round - 1,  match * 2 - 1, 0))
+                            && getPlayer(round - 1, match * 2 - 1, 1) && getPlayer(round - 1,  match * 2 - 1, 2) 
+                            && getPlayer(round - 1, match * 2 - 1, 3) && getPlayer(round - 1,  match * 2 - 1, 0)
+                            && hasAuthority">
+                      <a (click)="startMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1,  match * 2 - 1, 3), getPlayer(round - 1,  match * 2 - 1, 2), getPlayer(round - 1,  match * 2 - 1, 0))">Start wedstrijd</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="!tournament.scheduled && round === 1">
+                      <input (change)="updateTournamentPlayer($event.target.value, round, match, 1, match * 4 - 3)" type="text" style="height: 18px; width: 140px; font-size: 13px;"
+                        placeholder="Speler {{match * 4 - 3}}" value="{{getPlayer(round, match, 1)}}" />
+                      <input (change)="updateTournamentPlayer($event.target.value, round, match, 2, match * 4 - 2)" type="text" style="height: 18px; width: 140px; font-size: 13px;"
+                        placeholder="Speler {{match * 4 - 2}}" value="{{getPlayer(round, match, 2)}}" />
+                    </ng-container>
+
+                    <ng-container *ngIf="tournament.scheduled && getPlayer(round, match, 1)">
+                      {{getPlayer(round, match, 1)}}
+                      <br>
+                    </ng-container>
+                    <ng-container *ngIf="tournament.scheduled && getPlayer(round, match, 2)">
+                      {{getPlayer(round, match, 2)}}
+                    </ng-container>
+
+                    <span>&nbsp;</span>
+                  </li>
+
+                  <li *ngIf="getGamePoints(getMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1,  match * 2 - 1, 3), getPlayer(round - 1,  match * 2 - 1, 2), getPlayer(round - 1,  match * 2 - 1, 0)))"
+                    class="game game-bottom" style="margin-bottom: -20px; border-style: none;">
+                    {{getGamePoints(getMatch(getPlayer(round - 1, match * 2 - 1, 1), getPlayer(round - 1, match * 2 - 1, 3), getPlayer(round
+                    - 1, match * 2 - 1, 2), getPlayer(round - 1, match * 2 - 1, 0)))}}
+                  </li>
+
+                  <li class="game game-spacer" style="min-height: 60px">&nbsp;</li>
+
+                  <li class="game game-top" [ngStyle]="getMarginTop(round, match, getPlayer(round, match, 3))">
+
+                    <ng-container *ngIf="tournament.scheduled && round !== 1 
+                              && getMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1,  match * 2, 3), getPlayer(round - 1,  match * 2, 2), getPlayer(round - 1,  match * 2, 0))
+                              && !getMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1,  match * 2, 3), getPlayer(round - 1,  match * 2, 2), getPlayer(round - 1,  match * 2, 0)).matchFinished">
+                      <a (click)="viewMatch(getMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1,  match * 2, 3), getPlayer(round - 1,  match * 2, 2), getPlayer(round - 1,  match * 2, 0)).id)">Bekijk wedstrijd</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="tournament.scheduled && round !== 1 && !getMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1,  match * 2, 3), getPlayer(round - 1,  match * 2, 2), getPlayer(round - 1,  match * 2, 0))
+                            && getPlayer(round - 1, match * 2, 1) && getPlayer(round - 1,  match * 2, 2) 
+                            && getPlayer(round - 1, match * 2, 3) && getPlayer(round - 1,  match * 2, 0)
+                            && hasAuthority">
+                      <a style="margin-top: -10px;" (click)="startMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1,  match * 2, 3), getPlayer(round - 1,  match * 2, 2), getPlayer(round - 1,  match * 2, 0))">Start wedstrijd</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="!tournament.scheduled && round === 1">
+                      <input (change)="updateTournamentPlayer($event.target.value, round, match, 3, match * 4 - 1)" type="text" style="height: 18px; width: 140px; font-size: 13px;"
+                        placeholder="Speler {{match * 4 - 1}}" value="{{getPlayer(round, match, 3)}}" />
+                      <input (change)="updateTournamentPlayer($event.target.value, round, match, 0, match * 4)" type="text" style="height: 18px; width: 140px; font-size: 13px;"
+                        placeholder="Speler {{match * 4}}" value="{{getPlayer(round, match, 0)}}" />
+                    </ng-container>
+
+                    <ng-container *ngIf="tournament.scheduled && getPlayer(round, match, 3)">
+                      {{getPlayer(round, match, 3)}}
+                      <br>
+                    </ng-container>
+                    <ng-container *ngIf="tournament.scheduled && getPlayer(round, match, 0)">
+                      {{getPlayer(round, match, 0)}}
+                    </ng-container>
+
+
+                  </li>
+                  <span>&nbsp;</span>
+
+                  <li *ngIf="getGamePoints(getMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1,  match * 2, 3), getPlayer(round - 1,  match * 2, 2), getPlayer(round - 1,  match * 2, 0)))"
+                    class="game game-bottom" style="border-style: none;" [style.margin-top]="getGamePoints(getMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1,  match * 2, 3), getPlayer(round - 1,  match * 2, 2), getPlayer(round - 1,  match * 2, 0))) ? '-20px' : '0px'">
+                    {{getGamePoints(getMatch(getPlayer(round - 1, match * 2, 1), getPlayer(round - 1, match * 2, 3), getPlayer(round - 1, match
+                    * 2, 2), getPlayer(round - 1, match * 2, 0)))}}
+                  </li>
+
+                  <li class="spacer">&nbsp;</li>
+                </ng-container>
+
+
+                <ng-container *ngIf="!match && (tournament.type === 'MEN_SINGLE' || tournament.type === 'WOMEN_SINGLE')">
+                  <li class="game game-top winner">
+                    <ng-container *ngIf="tournament.scheduled && round !== 1 && getMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1,  1, 0))
+                        && !getMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1,  1, 0)).matchFinished">
+                      <a (click)="viewMatch(getMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1,  1, 0)).id)">Bekijk wedstrijd</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="tournament.scheduled && round !== 1 && !getMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1,  1, 0))
+                        && getPlayer(round - 1, 1, 1) && getPlayer(round - 1,  1, 0)">
+                      <a (click)="startMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1, 1, 0))">Start wedstrijd</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="tournament.scheduled && getPlayer(round, 1, 1)">
+                      {{getPlayer(round, 1, 1)}}
+                    </ng-container>
+
+                    <span>&nbsp;</span>
+                  </li>
+                  <li *ngIf="getGamePoints(getMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1, 1, 0)))" class="game game-bottom" style="margin-bottom: -20px; border-style: none;">
+                    {{getGamePoints(getMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1, 1, 0)))}}
+                  </li>
+                </ng-container>
+
+                <ng-container *ngIf="!match && tournament.type !== 'MEN_SINGLE' && tournament.type !== 'WOMEN_SINGLE'">
+                  <li class="game game-top winner">
+                    <ng-container *ngIf="tournament.scheduled && round !== 1 && getMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1,  1, 3), getPlayer(round - 1, 1, 2), getPlayer(round - 1,  1, 0))
+                        && !getMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1,  1, 3), getPlayer(round - 1, 1, 2), getPlayer(round - 1,  1, 0)).matchFinished">
+                      <a (click)="viewMatch(getMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1,  1, 0)).id)">Bekijk wedstrijd</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="tournament.scheduled && round !== 1 && !getMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1,  1, 3), getPlayer(round - 1, 1, 2), getPlayer(round - 1,  1, 0))
+                        && getPlayer(round - 1, 1, 1) && getPlayer(round - 1,  1, 0) && getPlayer(round - 1, 1, 2) && getPlayer(round - 1, 1, 3)">
+                      <a (click)="startMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1,  1, 3), getPlayer(round - 1, 1, 2), getPlayer(round - 1,  1, 0))">Start wedstrijd</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="tournament.scheduled && getPlayer(round, 1, 1)">
+                      {{getPlayer(round, 1, 1)}}
+                      <br>
+                    </ng-container>
+                    <ng-container *ngIf="tournament.scheduled && getPlayer(round, 1, 2)">
+                      {{getPlayer(round, 1, 2)}}
+                    </ng-container>
+
+                    <span>&nbsp;</span>
+                  </li>
+                  <li *ngIf="getGamePoints(getMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1,  1, 3), getPlayer(round - 1, 1, 2), getPlayer(round - 1,  1, 0)))"
+                    class="game game-bottom" style="margin-bottom: -20px; border-style: none;">
+                    {{getGamePoints(getMatch(getPlayer(round - 1, 1, 1), getPlayer(round - 1, 1, 3), getPlayer(round - 1, 1, 2), getPlayer(round
+                    - 1, 1, 0)))}}
+                  </li>
+                </ng-container>
+              </ng-container>
+            </ul>
+          </main>
+        </div>
+      </div>
+    </div>
+  </ion-scroll>
+</ion-content>

@@ -1,43 +1,40 @@
 import { Component, OnInit } from '@angular/core';
-import { BadmintonMatch } from '../badminton-match';
-import { MatchService } from '../match.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../../account/user.service';
+import { TournamentService } from '../tournament.service';
+import { Tournament } from '../tournament';
 import { ToastController } from 'ionic-angular';
 
 @Component({
-  selector: 'bme-match-create',
-  templateUrl: './match-create.component.html'
+  selector: 'bme-tournament-create',
+  templateUrl: './tournament-create.component.html'
 })
-export class MatchCreateComponent implements OnInit {
-  match: BadmintonMatch;
-  matchTitle: string;
+export class TournamentCreateComponent implements OnInit {
+  today = new Date();
+  title: string;
   selectedMatchType = 'NONE';
-  player1: string;
-  player2: string;
-  player3: string;
-  player4: string;
+  startDate: Date;
+  endDate: Date;
+  numberOfTeams: number;
   street: string;
-  postalCode: string;
   city: string;
-  terrainNumber: string;
   createLocation = false;
 
-  constructor(private _matchService: MatchService, private _userService: UserService, private _toastCtrl: ToastController) { }
+  constructor(private _tournamentService: TournamentService, private _userService: UserService, private _toastCtrl: ToastController) { }
 
   ngOnInit() {
   }
 
-  createMatch() {
+  createTournament() {
     this._userService.getUser()
       .then(prop => {
         if (prop[0] && prop[1]) {
-          this._matchService.createMatch(new BadmintonMatch(this.matchTitle, this.selectedMatchType,
-            this.player1, this.player2, this.player3, this.player4, this.street, this.city, this.terrainNumber),
-            +prop[0])
+          this._tournamentService.createTournament(new Tournament(this.title, this.numberOfTeams, this.selectedMatchType,
+            new Date(this.startDate), new Date(this.endDate), this.street, this.city), +prop[0])
             .subscribe(
-              badmintonMatch => {
-                if (badmintonMatch) {
-                  this.showSuccess('Wedstrijd succesvol aangemaakt!');
+              tournament => {
+                if (tournament) {
+                  this.showSuccess('Toernooi succesvol aangemaakt!');
                   this.clearForm();
                 }
               },
@@ -69,15 +66,13 @@ export class MatchCreateComponent implements OnInit {
   }
 
   clearForm() {
-    this.matchTitle = null;
+    this.title = null;
     this.selectedMatchType = 'NONE';
-    this.player1 = null;
-    this.player2 = null;
-    this.player3 = null;
-    this.player4 = null;
+    this.numberOfTeams = null;
+    this.startDate = null;
+    this.endDate = null;
     this.street = null;
     this.city = null;
-    this.terrainNumber = null;
     this.createLocation = false;
   }
 }
