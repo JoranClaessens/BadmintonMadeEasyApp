@@ -3,6 +3,8 @@ import { Slides, Nav, ToastController } from 'ionic-angular';
 import { MatchListComponent } from '../matches/match-list/match-list.component';
 import { UserService } from '../account/user.service';
 import { MatchCreateComponent } from '../matches/match-create/match-create.component';
+import { TournamentListComponent } from '../tournaments/tournament-list/tournament-list.component';
+import { TournamentCreateComponent } from '../tournaments/tournament-create/tournament-create.component';
 
 @Component({
   selector: 'bme-home',
@@ -30,6 +32,21 @@ export class HomeComponent implements OnInit {
 
   searchMatch() {
     this._nav.push(MatchListComponent);
+  }
+
+  startTournament() {
+    this._userService.getUser()
+      .then(prop => {
+        if (prop[0] && prop[1]) {
+          this._nav.push(TournamentCreateComponent);
+        } else {
+          this.showWarning('U moet zich eerst aanmelden of registreren voordat u een wedstrijd kan aanmaken!');
+        }
+      });
+  }
+
+  searchTournament() {
+    this._nav.push(TournamentListComponent);
   }
 
   ionViewDidEnter() {

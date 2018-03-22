@@ -10,10 +10,47 @@
 </ion-header>
 
 <ion-content>
-  <ion-scroll scrollX="true" style="height: 20000px;">
+  <ion-card *ngIf="tournament">
+    <ion-card-header class="bme-background-dark">Acties</ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item color="primary" text-wrap style="text-align: center">
+          Wil je andere personen op de hoogte houden van dit toernooi. Stuur dan de volgende sleutel naar deze persoon:
+          <br>
+          <br>
+          <p class="text text-primary" style="font-size: 30px; font-weight: bold; border: solid white 1px;">{{tournament.id}}</p>
+        </ion-item>
+        <hr *ngIf="!tournament.scheduled && hasAuthority">
+        <ion-item color="primary" text-wrap style="text-align: center" *ngIf="!tournament.scheduled && hasAuthority">
+          Het toernooi kan pas starten wanneer alle spelers geloot en ingegeven zijn in dit schema.
+          <br>
+          <br> Er dienen nog
+          <span *ngIf="tournament.type === 'MEN_SINGLE' || tournament.type === 'WOMEN_SINGLE'" style="font-weight: bold">{{tournament.numberOfTeams - tournament.players.length}}</span>
+          <span *ngIf="tournament.type !== 'MEN_SINGLE' && tournament.type !== 'WOMEN_SINGLE'" style="font-weight: bold">{{tournament.numberOfTeams * 2 - tournament.players.length}}</span>
+          spelers ingegeven te worden.
+          <br> Laat het veld leeg in geval van een Bye.
+          <br>
+          <br>
+          <button ion-button small block color="primary" *ngIf="tournament.type === 'MEN_SINGLE' || tournament.type === 'WOMEN_SINGLE'"
+            [disabled]="tournament.numberOfTeams !== tournament.players.length" (click)="scheduleTournament()">Schema vastleggen</button>
+          <button ion-button small block color="primary" *ngIf="tournament.type !== 'MEN_SINGLE' && tournament.type !== 'WOMEN_SINGLE'"
+            [disabled]="tournament.numberOfTeams * 2 !== tournament.players.length" (click)="scheduleTournament()">Schema vastleggen</button>
+        </ion-item>
+        <hr *ngIf="hasAuthority">
+        <ion-item color="danger" text-wrap style="text-align: center" *ngIf="hasAuthority">
+          Verwijder dit toernooi
+          <span *ngIf="tournament.matches.length > 0"> en de bijbehorende wedstrijden</span>.
+          <br>
+          <br>
+          <button ion-button small block color="danger" (click)="deleteTournament()">Verwijder toernooi</button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-scroll scrollX="true" style="height: 20000px; margin-left: 15px;">
     <div *ngIf="tournament">
-      <h1>{{tournament.title}}</h1>
-      <p *ngIf="tournament.street && tournament.city" class="text text-primary">{{tournament.street}}, {{tournament.city}}</p>
+      <h1 style="margin-bottom: -10px;">{{tournament.title}}</h1>
+      <p *ngIf="tournament.street && tournament.city" style="margin-bottom: -10px;">{{tournament.street}}, {{tournament.city}}</p>
       <div class="row">
         <div class="col-md-9">
           <main>
