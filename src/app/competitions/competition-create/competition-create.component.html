@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button left menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Competitiepartij aanmaken</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label stacked>Titel</ion-label>
+      <ion-input type="text" [(ngModel)]="title"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Type competitie</ion-label>
+      <ion-select [(ngModel)]="selectedCompetitionType">
+        <ion-option value="NONE" selected>Kies een type...</ion-option>
+        <ion-option value="MEN">Heren competitie</ion-option>
+        <ion-option value="WOMEN">Vrouwen competitie</ion-option>
+        <ion-option value="MIX">Gemengde competitie</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngIf="selectedCompetitionType !== 'NONE'">
+      <ion-label stacked>Team 1</ion-label>
+      <ion-input type="text" placeholder="Team 1" [(ngModel)]="team1"></ion-input>
+    </ion-item>
+    
+    <ion-item *ngIf="selectedCompetitionType !== 'NONE'">
+      <ion-label stacked>Team 2</ion-label>
+      <ion-input type="text" placeholder="Team 2" [(ngModel)]="team2"></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="selectedCompetitionType !== 'NONE'">
+      <ion-label stacked>StartDatum</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="startDate"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <button ion-button color="light" (click)="createLocation = !createLocation">Locatie toevoegen</button>
+      <span> *Optioneel</span>
+    </ion-item>
+
+    <div *ngIf="createLocation">
+      <ion-item>
+        <ion-label stacked>Straat + Huisnummer</ion-label>
+        <ion-input type="text" [(ngModel)]="street"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Postcode + Gemeente</ion-label>
+        <ion-input type="text" [(ngModel)]="city"></ion-input>
+      </ion-item>
+    </div>
+
+    <ion-item>
+      <button ion-button color="primary" block large (click)="createCompetition()">Opslaan</button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

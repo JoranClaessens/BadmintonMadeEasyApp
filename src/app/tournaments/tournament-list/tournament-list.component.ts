@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Tournament } from '../tournament';
-import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../../account/user.service';
 import { TournamentService } from '../tournament.service';
 import { Nav, ToastController } from 'ionic-angular';

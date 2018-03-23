@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button left menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Competitiepartijen</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list (swipe)="swipeEvent($event)">
+    <ion-grid>
+      <ion-row>
+        <ion-col (click)="loadAllCompetitions()" style="font-size: 18px; text-align: center" [ngStyle]="{'background': selectedMatchTab === 1 ? '#488aff' : '#679fff'}">
+          <a style="color: white">Alle competities</a>
+        </ion-col>
+        <ion-col (click)="loadUserCompetitions()" style="font-size: 18px; text-align: center" [ngStyle]="{'background': selectedMatchTab === 2 ? '#488aff' : '#679fff'}">
+          <a style="color: white">Jouw competities</a>
+          <ion-badge item-end color="danger">{{userCompetitionsCount}}</ion-badge>
+        </ion-col>
+        <ion-col (click)="createCompetition()" style="font-size: 18px; text-align: center; background: #ff9900">
+          <a style="color: white">competitie aanmaken</a>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-item *ngFor="let competition of competitions" (click)="competitionDetail(competition.id)">
+      <p style="float: left;">{{competition.title}}</p>
+      <p style="text-align: right">{{competition.startDate | date: 'dd/MM/yyyy'}}</p>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-5 style="text-align: right">
+            {{competition.team1}}
+          </ion-col>
+          <ion-col center col-2 style="text-align: center">
+            vs
+          </ion-col>
+          <ion-col col-5 style="text-align: left">
+            {{competition.team2}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+</ion-content>

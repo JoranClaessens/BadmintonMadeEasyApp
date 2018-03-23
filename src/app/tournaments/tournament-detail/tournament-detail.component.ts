@@ -213,8 +213,6 @@ export class TournamentDetailComponent implements OnInit {
               });
         }
       });
-
-
   }
 
   checkLastRound(matchRound: number): boolean {

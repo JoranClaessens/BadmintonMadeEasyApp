@@ -5,6 +5,8 @@ import { UserService } from '../account/user.service';
 import { MatchCreateComponent } from '../matches/match-create/match-create.component';
 import { TournamentListComponent } from '../tournaments/tournament-list/tournament-list.component';
 import { TournamentCreateComponent } from '../tournaments/tournament-create/tournament-create.component';
+import { CompetitionCreateComponent } from '../competitions/competition-create/competition-create.component';
+import { CompetitionListComponent } from '../competitions/competition-list/competition-list.component';
 
 @Component({
   selector: 'bme-home',
@@ -47,6 +49,21 @@ export class HomeComponent implements OnInit {
 
   searchTournament() {
     this._nav.push(TournamentListComponent);
+  }
+
+  startCompetition() {
+    this._userService.getUser()
+      .then(prop => {
+        if (prop[0] && prop[1]) {
+          this._nav.push(CompetitionCreateComponent);
+        } else {
+          this.showWarning('U moet zich eerst aanmelden of registreren voordat u een competitiepartij kan aanmaken!');
+        }
+      });
+  }
+
+  searchCompetition() {
+    this._nav.push(CompetitionListComponent);
   }
 
   ionViewDidEnter() {

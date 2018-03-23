@@ -22,6 +22,10 @@ import { TournamentListComponent } from './tournaments/tournament-list/tournamen
 import { TournamentCreateComponent } from './tournaments/tournament-create/tournament-create.component';
 import { TournamentDetailComponent } from './tournaments/tournament-detail/tournament-detail.component';
 import { TournamentService } from './tournaments/tournament.service';
+import { CompetitionService } from './competitions/competition.service';
+import { CompetitionListComponent } from './competitions/competition-list/competition-list.component';
+import { CompetitionCreateComponent } from './competitions/competition-create/competition-create.component';
+import { CompetitionDetailComponent } from './competitions/competition-detail/competition-detail.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +40,10 @@ import { TournamentService } from './tournaments/tournament.service';
     MatchSimulateComponent,
     TournamentListComponent,
     TournamentCreateComponent,
-    TournamentDetailComponent
+    TournamentDetailComponent,
+    CompetitionListComponent,
+    CompetitionCreateComponent,
+    CompetitionDetailComponent
 ],
   imports: [
     BrowserModule,
@@ -57,12 +64,16 @@ import { TournamentService } from './tournaments/tournament.service';
     MatchSimulateComponent,
     TournamentListComponent,
     TournamentCreateComponent,
-    TournamentDetailComponent
+    TournamentDetailComponent,
+    CompetitionListComponent,
+    CompetitionCreateComponent,
+    CompetitionDetailComponent
   ],
   providers: [
     UserService,
     MatchService,
     TournamentService,
+    CompetitionService,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
