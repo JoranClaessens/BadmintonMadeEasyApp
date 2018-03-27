@@ -5,1694 +5,558 @@
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Competitie</ion-title>
+    <ion-title>Competitiepartij</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div *ngIf="competition" class="container-fluid" style="background-color: white; border-width: 2px; border-radius: 5px; border-color: cornflowerblue; border-style: solid; padding-top: 10px; padding-bottom: 15px; margin-bottom: 20px;">
-    <h1>{{competition.title}}</h1>
-    <p *ngIf="competition.street && competition.city" class="text text-primary">{{competition.street}}, {{competition.city}}</p>
-    <table *ngIf="competition.type === 'MEN'" class="table table-bordered" style="margin-top: 20px; font-size: 20px;">
-      <thead>
-        <tr class="table-primary">
-          <th scope="col">Onderdeel</th>
-          <th scope="col" style="text-align: right; width: 400px;">{{competition.team1}}</th>
-          <th scope="col" style="width: 400px;">{{competition.team2}}</th>
-          <th scope="col" style="text-align: center; width: 150px;">Set 1</th>
-          <th scope="col" style="text-align: center; width: 150px;">Set 2</th>
-          <th scope="col" style="text-align: center; width: 150px;">Set 3</th>
-          <th scope="col" style="text-align: center">Acties</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">HD1</th>
+  <div *ngIf="competition">
+    <h1 style="text-align: center">{{competition.title}}</h1>
+    <p style="text-align: center" *ngIf="competition.street && competition.city">{{competition.street}}, {{competition.city}}</p>
+    <ion-grid *ngIf="competition.type === 'MEN'">
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1></ion-col>
+        <ion-col col-5 style="text-align: right;" [ngStyle]="{'font-weight': getFontWeight(competition.matchesWonTeam1, competition.matchesWonTeam2)}">{{competition.team1}} {{competition.matchesWonTeam1}}</ion-col>
+        <ion-col col-5 [ngStyle]="{'font-weight': getFontWeight(competition.matchesWonTeam2, competition.matchesWonTeam1)}">{{competition.matchesWonTeam2}} {{competition.team2}}</ion-col>
+        <ion-col col-1></ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">HD1</ion-col>
 
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
             getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 1, 1)"
-              [value]="getPlayer(competition.team1, 1, 1)?.name" placeholder="Naam speler" name="match1team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
+            [value]="getPlayer(competition.team1, 1, 1)?.name" placeholder="Naam speler" name="match1team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
             getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 1, 2)"
-              [value]="getPlayer(competition.team1, 1, 2)?.name" placeholder="Naam speler" name="match1team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
-          </td>
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
+            [value]="getPlayer(competition.team1, 1, 2)?.name" placeholder="Naam speler" name="match1team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
+        </ion-col>
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
             getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 1, 1)"
-              [value]="getPlayer(competition.team2, 1, 1)?.name" placeholder="Naam speler" name="match1team2position1" style="width: 100%; padding-left: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
+            [value]="getPlayer(competition.team2, 1, 1)?.name" placeholder="Naam speler" name="match1team2position1" style="width: 100%; padding-left: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
             getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 1, 2)"
-              [value]="getPlayer(competition.team2, 1, 2)?.name" placeholder="Naam speler" name="match1team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
-          </td>
+            [value]="getPlayer(competition.team2, 1, 2)?.name" placeholder="Naam speler" name="match1team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
-              getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-              1, 2), 'DOUBLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-              1, 2), 'DOUBLE').games[0].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1,
-              1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
-              getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-                1, 2), 'DOUBLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-              1, 2), 'DOUBLE').games[1].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1,
-              1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
-              getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-                  1, 2), 'DOUBLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-              1, 2), 'DOUBLE').games[2].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1,
-              1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">HD2</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && getPlayer(competition.team1, 1, 1) && getPlayer(competition.team1,
-            1, 2) && getPlayer(competition.team2, 1, 1) && getPlayer(competition.team2, 1, 2) && hasAuthority" class="btn btn-primary
-            " (click)="startMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'MEN_DOUBLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && !getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1,
-            1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">HD2</th>
-
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
             getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 2, 1)"
-              [value]="getPlayer(competition.team1, 2, 1)?.name" placeholder="Naam speler" name="match2team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
+            [value]="getPlayer(competition.team1, 2, 1)?.name" placeholder="Naam speler" name="match2team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
             getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 2, 2)"
-              [value]="getPlayer(competition.team1, 2, 2)?.name" placeholder="Naam speler" name="match2team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
-          </td>
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
+            [value]="getPlayer(competition.team1, 2, 2)?.name" placeholder="Naam speler" name="match2team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
+        </ion-col>
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
             getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 2, 1)"
-              [value]="getPlayer(competition.team2, 2, 1)?.name" placeholder="Naam speler" name="match2team2position1" style="width: 100%; padding-left: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
+            [value]="getPlayer(competition.team2, 2, 1)?.name" placeholder="Naam speler" name="match2team2position1" style="width: 100%; padding-left: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
             getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 2, 2)"
-              [value]="getPlayer(competition.team2, 2, 2)?.name" placeholder="Naam speler" name="match2team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
-          </td>
+            [value]="getPlayer(competition.team2, 2, 2)?.name" placeholder="Naam speler" name="match2team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
-              getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-              2, 2), 'DOUBLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-              2, 2), 'DOUBLE').games[0].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1,
-              2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
-              getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-                2, 2), 'DOUBLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-              2, 2), 'DOUBLE').games[1].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1,
-              2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
-              getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-                  2, 2), 'DOUBLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-              2, 2), 'DOUBLE').games[2].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1,
-              2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">HD3</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && getPlayer(competition.team1, 2, 1) && getPlayer(competition.team1,
-            2, 2) && getPlayer(competition.team2, 2, 1) && getPlayer(competition.team2, 2, 2) && hasAuthority" class="btn btn-primary
-            " (click)="startMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'MEN_DOUBLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && !getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1,
-            2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">HD3</th>
-
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
             getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 3, 1)"
-              [value]="getPlayer(competition.team1, 3, 1)?.name" placeholder="Naam speler" name="match3team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
+            [value]="getPlayer(competition.team1, 3, 1)?.name" placeholder="Naam speler" name="match3team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
             getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 3, 2)"
-              [value]="getPlayer(competition.team1, 3, 2)?.name" placeholder="Naam speler" name="match3team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
-          </td>
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
+            [value]="getPlayer(competition.team1, 3, 2)?.name" placeholder="Naam speler" name="match3team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
+        </ion-col>
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
             getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 3, 1)"
-              [value]="getPlayer(competition.team2, 3, 1)?.name" placeholder="Naam speler" name="match3team2position1" style="width: 100%; padding-left: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
+            [value]="getPlayer(competition.team2, 3, 1)?.name" placeholder="Naam speler" name="match3team2position1" style="width: 100%; padding-left: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
             getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 3, 2)"
-              [value]="getPlayer(competition.team2, 3, 2)?.name" placeholder="Naam speler" name="match3team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
-          </td>
+            [value]="getPlayer(competition.team2, 3, 2)?.name" placeholder="Naam speler" name="match3team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
-              getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2,
-              3, 2), 'DOUBLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2,
-              3, 2), 'DOUBLE').games[0].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1,
-              3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
-              getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2,
-                3, 2), 'DOUBLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2,
-              3, 2), 'DOUBLE').games[1].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1,
-              3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
-              getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2,
-                  3, 2), 'DOUBLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2,
-              3, 2), 'DOUBLE').games[2].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1,
-              3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">HD4</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2,
-            3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE') && getPlayer(competition.team1, 3, 1) && getPlayer(competition.team1,
-            3, 2) && getPlayer(competition.team2, 3, 1) && getPlayer(competition.team2, 3, 2) && hasAuthority" class="btn btn-primary
-            " (click)="startMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2,
-            3, 1), getPlayer(competition.team2, 3, 2), 'MEN_DOUBLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2,
-            3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE') && !getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1,
-            3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2,
-            3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2,
-            3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2,
-            3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">HD4</th>
-
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
             getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 4, 1)"
-              [value]="getPlayer(competition.team1, 4, 1)?.name" placeholder="Naam speler" name="match4team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
+            [value]="getPlayer(competition.team1, 4, 1)?.name" placeholder="Naam speler" name="match4team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
             getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 4, 2)"
-              [value]="getPlayer(competition.team1, 4, 2)?.name" placeholder="Naam speler" name="match4team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
-          </td>
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
+            [value]="getPlayer(competition.team1, 4, 2)?.name" placeholder="Naam speler" name="match4team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
+        </ion-col>
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
             getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 4, 1)"
-              [value]="getPlayer(competition.team2, 4, 1)?.name" placeholder="Naam speler" name="match4team2position1" style="width: 100%; padding-left: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
+            [value]="getPlayer(competition.team2, 4, 1)?.name" placeholder="Naam speler" name="match4team2position1" style="width: 100%; padding-left: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
             getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 4, 2)"
-              [value]="getPlayer(competition.team2, 4, 2)?.name" placeholder="Naam speler" name="match4team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
-          </td>
+            [value]="getPlayer(competition.team2, 4, 2)?.name" placeholder="Naam speler" name="match4team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
-              getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2,
-              4, 2), 'DOUBLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2,
-              4, 2), 'DOUBLE').games[0].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1,
-              4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
-              getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2,
-                4, 2), 'DOUBLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2,
-              4, 2), 'DOUBLE').games[1].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1,
-              4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
-              getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2,
-                  4, 2), 'DOUBLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2,
-              4, 2), 'DOUBLE').games[2].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1,
-              4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">HE1</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2,
-            4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE') && getPlayer(competition.team1, 4, 1) && getPlayer(competition.team1,
-            4, 2) && getPlayer(competition.team2, 4, 1) && getPlayer(competition.team2, 4, 2) && hasAuthority" class="btn btn-primary
-            " (click)="startMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2,
-            4, 1), getPlayer(competition.team2, 4, 2), 'MEN_DOUBLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2,
-            4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE') && !getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1,
-            4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2,
-            4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2,
-            4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2,
-            4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">HE1</th>
-
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 5, 1), null, 
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 5, 1), null, 
             getPlayer(competition.team2, 5, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 5, 1)"
-              [value]="getPlayer(competition.team1, 5, 1)?.name" placeholder="Naam speler" name="match5team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-          </td>
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 5, 1), null, 
+            [value]="getPlayer(competition.team1, 5, 1)?.name" placeholder="Naam speler" name="match5team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+        </ion-col>
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 5, 1), null, 
             getPlayer(competition.team2, 5, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 5, 1)"
-              [value]="getPlayer(competition.team2, 5, 1)?.name" placeholder="Naam speler" name="match5team2position1" style="width: 100%; padding-left: 15px;">
-          </td>
+            [value]="getPlayer(competition.team2, 5, 1)?.name" placeholder="Naam speler" name="match5team2position1" style="width: 100%; padding-left: 15px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[0].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[1].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[2].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">HE2</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && getPlayer(competition.team1, 5, 1) && getPlayer(competition.team2, 5, 1) && hasAuthority"
-              class="btn btn-primary" (click)="startMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2,
-            5, 1), null, 'MEN_SINGLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && !getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">HE2</th>
-
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 6, 1), null, 
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 6, 1), null, 
             getPlayer(competition.team2, 6, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 6, 1)"
-              [value]="getPlayer(competition.team1, 6, 1)?.name" placeholder="Naam speler" name="match6team1position1" style="width: 100%; text-align: right; padding-right: 16px;">
-          </td>
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 6, 1), null, 
+            [value]="getPlayer(competition.team1, 6, 1)?.name" placeholder="Naam speler" name="match6team1position1" style="width: 100%; text-align: right; padding-right: 16px;">
+        </ion-col>
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 6, 1), null, 
             getPlayer(competition.team2, 6, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 6, 1)"
-              [value]="getPlayer(competition.team2, 6, 1)?.name" placeholder="Naam speler" name="match6team2position1" style="width: 100%; padding-left: 16px;">
-          </td>
+            [value]="getPlayer(competition.team2, 6, 1)?.name" placeholder="Naam speler" name="match6team2position1" style="width: 100%; padding-left: 16px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[0].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[1].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[2].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">HE3</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && getPlayer(competition.team1, 6, 1) && getPlayer(competition.team2, 6, 1) && hasAuthority"
-              class="btn btn-primary" (click)="startMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2,
-            6, 1), null, 'MEN_SINGLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && !getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">HE3</th>
-
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), null, 
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), null, 
             getPlayer(competition.team2, 7, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 7, 1)"
-              [value]="getPlayer(competition.team1, 7, 1)?.name" placeholder="Naam speler" name="match7team1position1" style="width: 100%; text-align: right; padding-right: 17px;">
-          </td>
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), null, 
+            [value]="getPlayer(competition.team1, 7, 1)?.name" placeholder="Naam speler" name="match7team1position1" style="width: 100%; text-align: right; padding-right: 17px;">
+        </ion-col>
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), null, 
             getPlayer(competition.team2, 7, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 7, 1)"
-              [value]="getPlayer(competition.team2, 7, 1)?.name" placeholder="Naam speler" name="match7team2position1" style="width: 100%; padding-left: 17px;">
-          </td>
+            [value]="getPlayer(competition.team2, 7, 1)?.name" placeholder="Naam speler" name="match7team2position1" style="width: 100%; padding-left: 17px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[0].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[1].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[2].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">HE4</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE') && getPlayer(competition.team1, 7, 1) && getPlayer(competition.team2, 7, 1) && hasAuthority"
-              class="btn btn-primary" (click)="startMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2,
-            7, 1), null, 'MEN_SINGLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE') && !getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">HE4</th>
-
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), null, 
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), null, 
             getPlayer(competition.team2, 8, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 8, 1)"
-              [value]="getPlayer(competition.team1, 8, 1)?.name" placeholder="Naam speler" name="match8team1position1" style="width: 100%; text-align: right; padding-right: 18px;">
-          </td>
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), null, 
+            [value]="getPlayer(competition.team1, 8, 1)?.name" placeholder="Naam speler" name="match8team1position1" style="width: 100%; text-align: right; padding-right: 18px;">
+        </ion-col>
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), null, 
             getPlayer(competition.team2, 8, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 8, 1)"
-              [value]="getPlayer(competition.team2, 8, 1)?.name" placeholder="Naam speler" name="match8team2position1" style="width: 100%; padding-left: 18px;">
-          </td>
+            [value]="getPlayer(competition.team2, 8, 1)?.name" placeholder="Naam speler" name="match8team2position1" style="width: 100%; padding-left: 18px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[0].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[1].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[2].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <button ion-button block color="danger" *ngIf="hasAuthority" (click)="deleteCompetition()">
+          Verwijder competitiepartij
+        </button>
+      </ion-row>
+    </ion-grid>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE') && getPlayer(competition.team1, 8, 1) && getPlayer(competition.team2, 8, 1) && hasAuthority"
-              class="btn btn-primary" (click)="startMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2,
-            8, 1), null, 'MEN_SINGLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE') && !getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">Score</th>
-          <td style="text-align: right; vertical-align: middle;" [ngStyle]="{'font-weight': getFontWeight(competition.matchesWonTeam1, competition.matchesWonTeam2)}">
-            {{competition.matchesWonTeam1}}
-          </td>
-          <td style="text-align: left; vertical-align: middle" [ngStyle]="{'font-weight': getFontWeight(competition.matchesWonTeam2, competition.matchesWonTeam1)}">
-            {{competition.matchesWonTeam2}}
-          </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="hasAuthority" class="btn btn-danger" (click)="deleteCompetition()">
-              Verwijder competitiepartij
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <ion-grid *ngIf="competition.type === 'WOMEN'">
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1></ion-col>
+        <ion-col col-5 style="text-align: right;" [ngStyle]="{'font-weight': getFontWeight(competition.matchesWonTeam1, competition.matchesWonTeam2)}">{{competition.team1}} {{competition.matchesWonTeam1}}</ion-col>
+        <ion-col col-5 [ngStyle]="{'font-weight': getFontWeight(competition.matchesWonTeam2, competition.matchesWonTeam1)}">{{competition.matchesWonTeam2}} {{competition.team2}}</ion-col>
+        <ion-col col-1></ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">DD1</ion-col>
 
-    <table *ngIf="competition.type==='WOMEN' " class="table table-bordered " style="margin-top: 20px; font-size: 20px;">
-      <thead>
-        <tr class="table-info">
-          <th scope="col">Onderdeel</th>
-          <th scope="col" style="text-align: right; width: 400px;">{{competition.team1}}</th>
-          <th scope="col" style="width: 400px;">{{competition.team2}}</th>
-          <th scope="col" style="text-align: center; width: 150px;">Set 1</th>
-          <th scope="col" style="text-align: center; width: 150px;">Set 2</th>
-          <th scope="col" style="text-align: center; width: 150px;">Set 3</th>
-          <th scope="col" style="text-align: center">Acties</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">DD1</th>
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
+              getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 1, 1)"
+            [value]="getPlayer(competition.team1, 1, 1)?.name" placeholder="Naam speler" name="match1team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
+              getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 1, 2)"
+            [value]="getPlayer(competition.team1, 1, 2)?.name" placeholder="Naam speler" name="match1team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
+        </ion-col>
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
+              getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 1, 1)"
+            [value]="getPlayer(competition.team2, 1, 1)?.name" placeholder="Naam speler" name="match1team2position1" style="width: 100%; padding-left: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
+              getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 1, 2)"
+            [value]="getPlayer(competition.team2, 1, 2)?.name" placeholder="Naam speler" name="match1team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
+        </ion-col>
 
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">DD2</ion-col>
+
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
+              getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 2, 1)"
+            [value]="getPlayer(competition.team1, 2, 1)?.name" placeholder="Naam speler" name="match2team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
+              getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 2, 2)"
+            [value]="getPlayer(competition.team1, 2, 2)?.name" placeholder="Naam speler" name="match2team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
+        </ion-col>
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
+              getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 2, 1)"
+            [value]="getPlayer(competition.team2, 2, 1)?.name" placeholder="Naam speler" name="match2team2position1" style="width: 100%; padding-left: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
+              getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 2, 2)"
+            [value]="getPlayer(competition.team2, 2, 2)?.name" placeholder="Naam speler" name="match2team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
+        </ion-col>
+
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">DD3</ion-col>
+
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
+              getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 3, 1)"
+            [value]="getPlayer(competition.team1, 3, 1)?.name" placeholder="Naam speler" name="match3team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
+              getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 3, 2)"
+            [value]="getPlayer(competition.team1, 3, 2)?.name" placeholder="Naam speler" name="match3team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
+        </ion-col>
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
+              getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 3, 1)"
+            [value]="getPlayer(competition.team2, 3, 1)?.name" placeholder="Naam speler" name="match3team2position1" style="width: 100%; padding-left: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
+              getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 3, 2)"
+            [value]="getPlayer(competition.team2, 3, 2)?.name" placeholder="Naam speler" name="match3team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
+        </ion-col>
+
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">DD4</ion-col>
+
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
+              getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 4, 1)"
+            [value]="getPlayer(competition.team1, 4, 1)?.name" placeholder="Naam speler" name="match4team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
+              getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 4, 2)"
+            [value]="getPlayer(competition.team1, 4, 2)?.name" placeholder="Naam speler" name="match4team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
+        </ion-col>
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
+              getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 4, 1)"
+            [value]="getPlayer(competition.team2, 4, 1)?.name" placeholder="Naam speler" name="match4team2position1" style="width: 100%; padding-left: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
+              getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 4, 2)"
+            [value]="getPlayer(competition.team2, 4, 2)?.name" placeholder="Naam speler" name="match4team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
+        </ion-col>
+
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">DE1</ion-col>
+
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 5, 1), null, 
+              getPlayer(competition.team2, 5, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 5, 1)"
+            [value]="getPlayer(competition.team1, 5, 1)?.name" placeholder="Naam speler" name="match5team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+        </ion-col>
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 5, 1), null, 
+              getPlayer(competition.team2, 5, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 5, 1)"
+            [value]="getPlayer(competition.team2, 5, 1)?.name" placeholder="Naam speler" name="match5team2position1" style="width: 100%; padding-left: 15px;">
+        </ion-col>
+
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">DE2</ion-col>
+
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 6, 1), null, 
+              getPlayer(competition.team2, 6, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 6, 1)"
+            [value]="getPlayer(competition.team1, 6, 1)?.name" placeholder="Naam speler" name="match6team1position1" style="width: 100%; text-align: right; padding-right: 16px;">
+        </ion-col>
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 6, 1), null, 
+              getPlayer(competition.team2, 6, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 6, 1)"
+            [value]="getPlayer(competition.team2, 6, 1)?.name" placeholder="Naam speler" name="match6team2position1" style="width: 100%; padding-left: 16px;">
+        </ion-col>
+
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">DE3</ion-col>
+
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), null, 
+              getPlayer(competition.team2, 7, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 7, 1)"
+            [value]="getPlayer(competition.team1, 7, 1)?.name" placeholder="Naam speler" name="match7team1position1" style="width: 100%; text-align: right; padding-right: 17px;">
+        </ion-col>
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), null, 
+              getPlayer(competition.team2, 7, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 7, 1)"
+            [value]="getPlayer(competition.team2, 7, 1)?.name" placeholder="Naam speler" name="match7team2position1" style="width: 100%; padding-left: 17px;">
+        </ion-col>
+
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">DE4</ion-col>
+
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), null, 
+              getPlayer(competition.team2, 8, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 8, 1)"
+            [value]="getPlayer(competition.team1, 8, 1)?.name" placeholder="Naam speler" name="match8team1position1" style="width: 100%; text-align: right; padding-right: 18px;">
+        </ion-col>
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), null, 
+              getPlayer(competition.team2, 8, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 8, 1)"
+            [value]="getPlayer(competition.team2, 8, 1)?.name" placeholder="Naam speler" name="match8team2position1" style="width: 100%; padding-left: 18px;">
+        </ion-col>
+
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <button ion-button block color="danger" *ngIf="hasAuthority" (click)="deleteCompetition()">
+          Verwijder competitiepartij
+        </button>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid *ngIf="competition.type==='MIX' ">
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1></ion-col>
+        <ion-col col-5 style="text-align: right;" [ngStyle]="{'font-weight': getFontWeight(competition.matchesWonTeam1, competition.matchesWonTeam2)}">{{competition.team1}} {{competition.matchesWonTeam1}}</ion-col>
+        <ion-col col-5 [ngStyle]="{'font-weight': getFontWeight(competition.matchesWonTeam2, competition.matchesWonTeam1)}">{{competition.matchesWonTeam2}} {{competition.team2}}</ion-col>
+        <ion-col col-1></ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">HD</ion-col>
+
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
             getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 1, 1)"
-              [value]="getPlayer(competition.team1, 1, 1)?.name" placeholder="Naam speler" name="match1team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
+            [value]="getPlayer(competition.team1, 1, 1)?.name" placeholder="Naam speler" name="match1team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
             getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 1, 2)"
-              [value]="getPlayer(competition.team1, 1, 2)?.name" placeholder="Naam speler" name="match1team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
-          </td>
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
+            [value]="getPlayer(competition.team1, 1, 2)?.name" placeholder="Naam speler" name="match1team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
+        </ion-col>
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
             getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 1, 1)"
-              [value]="getPlayer(competition.team2, 1, 1)?.name" placeholder="Naam speler" name="match1team2position1" style="width: 100%; padding-left: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
+            [value]="getPlayer(competition.team2, 1, 1)?.name" placeholder="Naam speler" name="match1team2position1" style="width: 100%; padding-left: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
             getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 1, 2)"
-              [value]="getPlayer(competition.team2, 1, 2)?.name" placeholder="Naam speler" name="match1team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
-          </td>
+            [value]="getPlayer(competition.team2, 1, 2)?.name" placeholder="Naam speler" name="match1team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
-              getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-              1, 2), 'DOUBLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-              1, 2), 'DOUBLE').games[0].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1,
-              1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
-              getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-                1, 2), 'DOUBLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-              1, 2), 'DOUBLE').games[1].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1,
-              1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
-              getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-                  1, 2), 'DOUBLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-              1, 2), 'DOUBLE').games[2].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1,
-              1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">DD</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && getPlayer(competition.team1, 1, 1) && getPlayer(competition.team1,
-            1, 2) && getPlayer(competition.team2, 1, 1) && getPlayer(competition.team2, 1, 2) && hasAuthority" class="btn btn-primary
-            " (click)="startMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'WOMEN_DOUBLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && !getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1,
-            1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">DD2</th>
-
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
             getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 2, 1)"
-              [value]="getPlayer(competition.team1, 2, 1)?.name" placeholder="Naam speler" name="match2team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
+            [value]="getPlayer(competition.team1, 2, 1)?.name" placeholder="Naam speler" name="match2team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
             getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 2, 2)"
-              [value]="getPlayer(competition.team1, 2, 2)?.name" placeholder="Naam speler" name="match2team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
-          </td>
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
+            [value]="getPlayer(competition.team1, 2, 2)?.name" placeholder="Naam speler" name="match2team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
+        </ion-col>
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
             getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 2, 1)"
-              [value]="getPlayer(competition.team2, 2, 1)?.name" placeholder="Naam speler" name="match2team2position1" style="width: 100%; padding-left: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
+            [value]="getPlayer(competition.team2, 2, 1)?.name" placeholder="Naam speler" name="match2team2position1" style="width: 100%; padding-left: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
             getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 2, 2)"
-              [value]="getPlayer(competition.team2, 2, 2)?.name" placeholder="Naam speler" name="match2team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
-          </td>
+            [value]="getPlayer(competition.team2, 2, 2)?.name" placeholder="Naam speler" name="match2team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
-              getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-              2, 2), 'DOUBLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-              2, 2), 'DOUBLE').games[0].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1,
-              2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
-              getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-                2, 2), 'DOUBLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-              2, 2), 'DOUBLE').games[1].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1,
-              2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
-              getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-                  2, 2), 'DOUBLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-              2, 2), 'DOUBLE').games[2].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1,
-              2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">HE1</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && getPlayer(competition.team1, 2, 1) && getPlayer(competition.team1,
-            2, 2) && getPlayer(competition.team2, 2, 1) && getPlayer(competition.team2, 2, 2) && hasAuthority" class="btn btn-primary
-            " (click)="startMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'WOMEN_DOUBLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && !getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1,
-            2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">DD3</th>
-
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
-            getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 3, 1)"
-              [value]="getPlayer(competition.team1, 3, 1)?.name" placeholder="Naam speler" name="match3team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
-            getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 3, 2)"
-              [value]="getPlayer(competition.team1, 3, 2)?.name" placeholder="Naam speler" name="match3team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
-          </td>
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
-            getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 3, 1)"
-              [value]="getPlayer(competition.team2, 3, 1)?.name" placeholder="Naam speler" name="match3team2position1" style="width: 100%; padding-left: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
-            getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 3, 2)"
-              [value]="getPlayer(competition.team2, 3, 2)?.name" placeholder="Naam speler" name="match3team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
-              getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2,
-              3, 2), 'DOUBLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2,
-              3, 2), 'DOUBLE').games[0].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1,
-              3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
-              getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2,
-                3, 2), 'DOUBLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2,
-              3, 2), 'DOUBLE').games[1].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1,
-              3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), 
-              getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2,
-                  3, 2), 'DOUBLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2,
-              3, 2), 'DOUBLE').games[2].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1,
-              3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2,
-            3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE') && getPlayer(competition.team1, 3, 1) && getPlayer(competition.team1,
-            3, 2) && getPlayer(competition.team2, 3, 1) && getPlayer(competition.team2, 3, 2) && hasAuthority" class="btn btn-primary
-            " (click)="startMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2,
-            3, 1), getPlayer(competition.team2, 3, 2), 'WOMEN_DOUBLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2,
-            3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE') && !getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1,
-            3, 2), getPlayer(competition.team2, 3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2,
-            3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2,
-            3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 3, 1), getPlayer(competition.team1, 3, 2), getPlayer(competition.team2,
-            3, 1), getPlayer(competition.team2, 3, 2), 'DOUBLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">DD4</th>
-
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
-            getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 4, 1)"
-              [value]="getPlayer(competition.team1, 4, 1)?.name" placeholder="Naam speler" name="match4team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
-            getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 4, 2)"
-              [value]="getPlayer(competition.team1, 4, 2)?.name" placeholder="Naam speler" name="match4team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
-          </td>
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
-            getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 4, 1)"
-              [value]="getPlayer(competition.team2, 4, 1)?.name" placeholder="Naam speler" name="match4team2position1" style="width: 100%; padding-left: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
-            getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 4, 2)"
-              [value]="getPlayer(competition.team2, 4, 2)?.name" placeholder="Naam speler" name="match4team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
-              getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2,
-              4, 2), 'DOUBLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2,
-              4, 2), 'DOUBLE').games[0].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1,
-              4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
-              getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2,
-                4, 2), 'DOUBLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2,
-              4, 2), 'DOUBLE').games[1].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1,
-              4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), 
-              getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2,
-                  4, 2), 'DOUBLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2,
-              4, 2), 'DOUBLE').games[2].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1,
-              4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2,
-            4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE') && getPlayer(competition.team1, 4, 1) && getPlayer(competition.team1,
-            4, 2) && getPlayer(competition.team2, 4, 1) && getPlayer(competition.team2, 4, 2) && hasAuthority" class="btn btn-primary
-            " (click)="startMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2,
-            4, 1), getPlayer(competition.team2, 4, 2), 'WOMEN_DOUBLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2,
-            4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE') && !getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1,
-            4, 2), getPlayer(competition.team2, 4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2,
-            4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2,
-            4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 4, 1), getPlayer(competition.team1, 4, 2), getPlayer(competition.team2,
-            4, 1), getPlayer(competition.team2, 4, 2), 'DOUBLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">DE1</th>
-
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 5, 1)"
-              [value]="getPlayer(competition.team1, 5, 1)?.name" placeholder="Naam speler" name="match5team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-          </td>
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 5, 1)"
-              [value]="getPlayer(competition.team2, 5, 1)?.name" placeholder="Naam speler" name="match5team2position1" style="width: 100%; padding-left: 15px;">
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[0].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[1].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[2].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && getPlayer(competition.team1, 5, 1) && getPlayer(competition.team2, 5, 1) && hasAuthority"
-              class="btn btn-primary" (click)="startMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2,
-            5, 1), null, 'WOMEN_SINGLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && !getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">DE2</th>
-
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 6, 1)"
-              [value]="getPlayer(competition.team1, 6, 1)?.name" placeholder="Naam speler" name="match6team1position1" style="width: 100%; text-align: right; padding-right: 16px;">
-          </td>
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 6, 1)"
-              [value]="getPlayer(competition.team2, 6, 1)?.name" placeholder="Naam speler" name="match6team2position1" style="width: 100%; padding-left: 16px;">
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[0].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[1].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[2].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && getPlayer(competition.team1, 6, 1) && getPlayer(competition.team2, 6, 1) && hasAuthority"
-              class="btn btn-primary" (click)="startMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2,
-            6, 1), null, 'WOMEN_SINGLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && !getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">DE3</th>
-
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 7, 1)"
-              [value]="getPlayer(competition.team1, 7, 1)?.name" placeholder="Naam speler" name="match7team1position1" style="width: 100%; text-align: right; padding-right: 17px;">
-          </td>
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 7, 1)"
-              [value]="getPlayer(competition.team2, 7, 1)?.name" placeholder="Naam speler" name="match7team2position1" style="width: 100%; padding-left: 17px;">
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[0].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[1].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[2].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2, 7, 1), null, 'SINGLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE') && getPlayer(competition.team1, 7, 1) && getPlayer(competition.team2, 7, 1) && hasAuthority"
-              class="btn btn-primary" (click)="startMatch(getPlayer(competition.team1, 7, 1), null, getPlayer(competition.team2,
-            7, 1), null, 'WOMEN_SINGLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE') && !getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 7, 1), null, 
-            getPlayer(competition.team2, 7, 1), null, 'SINGLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">DE4</th>
-
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 8, 1)"
-              [value]="getPlayer(competition.team1, 8, 1)?.name" placeholder="Naam speler" name="match8team1position1" style="width: 100%; text-align: right; padding-right: 18px;">
-          </td>
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 8, 1)"
-              [value]="getPlayer(competition.team2, 8, 1)?.name" placeholder="Naam speler" name="match8team2position1" style="width: 100%; padding-left: 18px;">
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[0].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[1].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[2].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2, 8, 1), null, 'SINGLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE') && getPlayer(competition.team1, 8, 1) && getPlayer(competition.team2, 8, 1) && hasAuthority"
-              class="btn btn-primary" (click)="startMatch(getPlayer(competition.team1, 8, 1), null, getPlayer(competition.team2,
-            8, 1), null, 'WOMEN_SINGLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE') && !getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 8, 1), null, 
-            getPlayer(competition.team2, 8, 1), null, 'SINGLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">Score</th>
-          <td style="text-align: right; vertical-align: middle;" [ngStyle]="{'font-weight': getFontWeight(competition.matchesWonTeam1, competition.matchesWonTeam2)}">
-            {{competition.matchesWonTeam1}}
-          </td>
-          <td style="text-align: left; vertical-align: middle" [ngStyle]="{'font-weight': getFontWeight(competition.matchesWonTeam2, competition.matchesWonTeam1)}">
-            {{competition.matchesWonTeam2}}
-          </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="hasAuthority" class="btn btn-danger" (click)="deleteCompetition()">
-              Verwijder competitiepartij
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <table *ngIf="competition.type==='MIX' " class="table table-bordered " style="margin-top: 20px; font-size: 20px;">
-      <thead>
-        <tr class="table-active">
-          <th scope="col">Onderdeel</th>
-          <th scope="col" style="text-align: right; width: 400px;">{{competition.team1}}</th>
-          <th scope="col" style="width: 400px;">{{competition.team2}}</th>
-          <th scope="col" style="text-align: center; width: 150px;">Set 1</th>
-          <th scope="col" style="text-align: center; width: 150px;">Set 2</th>
-          <th scope="col" style="text-align: center; width: 150px;">Set 3</th>
-          <th scope="col" style="text-align: center">Acties</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">HD</th>
-
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
-            getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 1, 1)"
-              [value]="getPlayer(competition.team1, 1, 1)?.name" placeholder="Naam speler" name="match1team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
-            getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 1, 2)"
-              [value]="getPlayer(competition.team1, 1, 2)?.name" placeholder="Naam speler" name="match1team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
-          </td>
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
-            getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 1, 1)"
-              [value]="getPlayer(competition.team2, 1, 1)?.name" placeholder="Naam speler" name="match1team2position1" style="width: 100%; padding-left: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
-            getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 1, 2)"
-              [value]="getPlayer(competition.team2, 1, 2)?.name" placeholder="Naam speler" name="match1team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
-              getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-              1, 2), 'DOUBLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-              1, 2), 'DOUBLE').games[0].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1,
-              1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
-              getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-                1, 2), 'DOUBLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-              1, 2), 'DOUBLE').games[1].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1,
-              1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), 
-              getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-                  1, 2), 'DOUBLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2,
-              1, 2), 'DOUBLE').games[2].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1,
-              1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && getPlayer(competition.team1, 1, 1) && getPlayer(competition.team1,
-            1, 2) && getPlayer(competition.team2, 1, 1) && getPlayer(competition.team2, 1, 2) && hasAuthority" class="btn btn-primary
-            " (click)="startMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'WOMEN_DOUBLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && !getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1,
-            1, 2), getPlayer(competition.team2, 1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 1, 1), getPlayer(competition.team1, 1, 2), getPlayer(competition.team2,
-            1, 1), getPlayer(competition.team2, 1, 2), 'DOUBLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">DD</th>
-
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
-            getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 2, 1)"
-              [value]="getPlayer(competition.team1, 2, 1)?.name" placeholder="Naam speler" name="match2team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
-            getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 2, 2)"
-              [value]="getPlayer(competition.team1, 2, 2)?.name" placeholder="Naam speler" name="match2team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
-          </td>
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
-            getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 2, 1)"
-              [value]="getPlayer(competition.team2, 2, 1)?.name" placeholder="Naam speler" name="match2team2position1" style="width: 100%; padding-left: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
-            getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 2, 2)"
-              [value]="getPlayer(competition.team2, 2, 2)?.name" placeholder="Naam speler" name="match2team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
-              getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-              2, 2), 'DOUBLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-              2, 2), 'DOUBLE').games[0].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1,
-              2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
-              getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-                2, 2), 'DOUBLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-              2, 2), 'DOUBLE').games[1].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1,
-              2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), 
-              getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-                  2, 2), 'DOUBLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2,
-              2, 2), 'DOUBLE').games[2].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1,
-              2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && getPlayer(competition.team1, 2, 1) && getPlayer(competition.team1,
-            2, 2) && getPlayer(competition.team2, 2, 1) && getPlayer(competition.team2, 2, 2) && hasAuthority" class="btn btn-primary
-            " (click)="startMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'WOMEN_DOUBLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && !getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1,
-            2, 2), getPlayer(competition.team2, 2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 2, 1), getPlayer(competition.team1, 2, 2), getPlayer(competition.team2,
-            2, 1), getPlayer(competition.team2, 2, 2), 'DOUBLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">HE1</th>
-
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), null, 
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), null, 
             getPlayer(competition.team2, 3, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 3, 1)"
-              [value]="getPlayer(competition.team1, 3, 1)?.name" placeholder="Naam speler" name="match3team1position1" style="width: 100%; text-align: right; padding-right: 13px;">
-          </td>
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), null, 
+            [value]="getPlayer(competition.team1, 3, 1)?.name" placeholder="Naam speler" name="match3team1position1" style="width: 100%; text-align: right; padding-right: 13px;">
+        </ion-col>
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 3, 1), null, 
             getPlayer(competition.team2, 3, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 3, 1)"
-              [value]="getPlayer(competition.team2, 3, 1)?.name" placeholder="Naam speler" name="match3team2position1" style="width: 100%; padding-left: 13px;">
-          </td>
+            [value]="getPlayer(competition.team2, 3, 1)?.name" placeholder="Naam speler" name="match3team2position1" style="width: 100%; padding-left: 13px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 3, 1), null, 
-            getPlayer(competition.team2, 3, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 3, 1), null, 
-            getPlayer(competition.team2, 3, 1), null, 'SINGLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 3, 1), null, getPlayer(competition.team2, 3, 1), null, 'SINGLE').games[0].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 3, 1), null, getPlayer(competition.team2, 3, 1), null, 'SINGLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 3, 1), null, 
-            getPlayer(competition.team2, 3, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 3, 1), null, 
-            getPlayer(competition.team2, 3, 1), null, 'SINGLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 3, 1), null, getPlayer(competition.team2, 3, 1), null, 'SINGLE').games[1].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 3, 1), null, getPlayer(competition.team2, 3, 1), null, 'SINGLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 3, 1), null, 
-            getPlayer(competition.team2, 3, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 3, 1), null, 
-            getPlayer(competition.team2, 3, 1), null, 'SINGLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 3, 1), null, getPlayer(competition.team2, 3, 1), null, 'SINGLE').games[2].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 3, 1), null, getPlayer(competition.team2, 3, 1), null, 'SINGLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">HE2</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 3, 1), null, 
-            getPlayer(competition.team2, 3, 1), null, 'SINGLE') && getPlayer(competition.team1, 3, 1) && getPlayer(competition.team2, 3, 1) && hasAuthority"
-              class="btn btn-primary" (click)="startMatch(getPlayer(competition.team1, 3, 1), null, getPlayer(competition.team2,
-            3, 1), null, 'MEN_SINGLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 3, 1), null, 
-            getPlayer(competition.team2, 3, 1), null, 'SINGLE') && !getMatch(getPlayer(competition.team1, 3, 1), null, 
-            getPlayer(competition.team2, 3, 1), null, 'SINGLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 3, 1), null, 
-            getPlayer(competition.team2, 3, 1), null, 'SINGLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 3, 1), null, 
-            getPlayer(competition.team2, 3, 1), null, 'SINGLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 3, 1), null, 
-            getPlayer(competition.team2, 3, 1), null, 'SINGLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">HE2</th>
-
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), null, 
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), null, 
             getPlayer(competition.team2, 4, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 4, 1)"
-              [value]="getPlayer(competition.team1, 4, 1)?.name" placeholder="Naam speler" name="match4team1position1" style="width: 100%; text-align: right; padding-right: 14px;">
-          </td>
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), null, 
+            [value]="getPlayer(competition.team1, 4, 1)?.name" placeholder="Naam speler" name="match4team1position1" style="width: 100%; text-align: right; padding-right: 14px;">
+        </ion-col>
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 4, 1), null, 
             getPlayer(competition.team2, 4, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 4, 1)"
-              [value]="getPlayer(competition.team2, 4, 1)?.name" placeholder="Naam speler" name="match4team2position1" style="width: 100%; padding-left: 14px;">
-          </td>
+            [value]="getPlayer(competition.team2, 4, 1)?.name" placeholder="Naam speler" name="match4team2position1" style="width: 100%; padding-left: 14px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 4, 1), null, 
-            getPlayer(competition.team2, 4, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 4, 1), null, 
-            getPlayer(competition.team2, 4, 1), null, 'SINGLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 4, 1), null, getPlayer(competition.team2, 4, 1), null, 'SINGLE').games[0].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 4, 1), null, getPlayer(competition.team2, 4, 1), null, 'SINGLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 4, 1), null, 
-            getPlayer(competition.team2, 4, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 4, 1), null, 
-            getPlayer(competition.team2, 4, 1), null, 'SINGLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 4, 1), null, getPlayer(competition.team2, 4, 1), null, 'SINGLE').games[1].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 4, 1), null, getPlayer(competition.team2, 4, 1), null, 'SINGLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 4, 1), null, 
-            getPlayer(competition.team2, 4, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 4, 1), null, 
-            getPlayer(competition.team2, 4, 1), null, 'SINGLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 4, 1), null, getPlayer(competition.team2, 4, 1), null, 'SINGLE').games[2].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 4, 1), null, getPlayer(competition.team2, 4, 1), null, 'SINGLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">DE1</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 4, 1), null, 
-            getPlayer(competition.team2, 4, 1), null, 'SINGLE') && getPlayer(competition.team1, 4, 1) && getPlayer(competition.team2, 4, 1) && hasAuthority"
-              class="btn btn-primary" (click)="startMatch(getPlayer(competition.team1, 4, 1), null, getPlayer(competition.team2,
-            4, 1), null, 'MEN_SINGLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 4, 1), null, 
-            getPlayer(competition.team2, 4, 1), null, 'SINGLE') && !getMatch(getPlayer(competition.team1, 4, 1), null, 
-            getPlayer(competition.team2, 4, 1), null, 'SINGLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 4, 1), null, 
-            getPlayer(competition.team2, 4, 1), null, 'SINGLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 4, 1), null, 
-            getPlayer(competition.team2, 4, 1), null, 'SINGLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 4, 1), null, 
-            getPlayer(competition.team2, 4, 1), null, 'SINGLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">DE1</th>
-
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 5, 1), null, 
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 5, 1), null, 
             getPlayer(competition.team2, 5, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 5, 1)"
-              [value]="getPlayer(competition.team1, 5, 1)?.name" placeholder="Naam speler" name="match5team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-          </td>
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 5, 1), null, 
+            [value]="getPlayer(competition.team1, 5, 1)?.name" placeholder="Naam speler" name="match5team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+        </ion-col>
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 5, 1), null, 
             getPlayer(competition.team2, 5, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 5, 1)"
-              [value]="getPlayer(competition.team2, 5, 1)?.name" placeholder="Naam speler" name="match5team2position1" style="width: 100%; padding-left: 15px;">
-          </td>
+            [value]="getPlayer(competition.team2, 5, 1)?.name" placeholder="Naam speler" name="match5team2position1" style="width: 100%; padding-left: 15px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[0].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[1].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[2].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2, 5, 1), null, 'SINGLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">DE2</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && getPlayer(competition.team1, 5, 1) && getPlayer(competition.team2, 5, 1) && hasAuthority"
-              class="btn btn-primary" (click)="startMatch(getPlayer(competition.team1, 5, 1), null, getPlayer(competition.team2,
-            5, 1), null, 'WOMEN_SINGLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && !getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 5, 1), null, 
-            getPlayer(competition.team2, 5, 1), null, 'SINGLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">DE2</th>
-
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 6, 1), null, 
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 6, 1), null, 
             getPlayer(competition.team2, 6, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 6, 1)"
-              [value]="getPlayer(competition.team1, 6, 1)?.name" placeholder="Naam speler" name="match6team1position1" style="width: 100%; text-align: right; padding-right: 16px;">
-          </td>
-          <td style="vertical-align: middle">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 6, 1), null, 
+            [value]="getPlayer(competition.team1, 6, 1)?.name" placeholder="Naam speler" name="match6team1position1" style="width: 100%; text-align: right; padding-right: 16px;">
+        </ion-col>
+        <ion-col col-5 style="vertical-align: middle">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 6, 1), null, 
             getPlayer(competition.team2, 6, 1), null, 'SINGLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 6, 1)"
-              [value]="getPlayer(competition.team2, 6, 1)?.name" placeholder="Naam speler" name="match6team2position1" style="width: 100%; padding-left: 16px;">
-          </td>
+            [value]="getPlayer(competition.team2, 6, 1)?.name" placeholder="Naam speler" name="match6team2position1" style="width: 100%; padding-left: 16px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[0].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[1].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[2].pointsTeam1
-              + '-' + getMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2, 6, 1), null, 'SINGLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">GD1</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && getPlayer(competition.team1, 6, 1) && getPlayer(competition.team2, 6, 1) && hasAuthority"
-              class="btn btn-primary" (click)="startMatch(getPlayer(competition.team1, 6, 1), null, getPlayer(competition.team2,
-            6, 1), null, 'WOMEN_SINGLE') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && !getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 6, 1), null, 
-            getPlayer(competition.team2, 6, 1), null, 'SINGLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">GD1</th>
-
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
             getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 7, 1)"
-              [value]="getPlayer(competition.team1, 7, 1)?.name" placeholder="Naam speler" name="match7team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
+            [value]="getPlayer(competition.team1, 7, 1)?.name" placeholder="Naam speler" name="match7team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
             getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 7, 2)"
-              [value]="getPlayer(competition.team1, 7, 2)?.name" placeholder="Naam speler" name="match7team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
-          </td>
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
+            [value]="getPlayer(competition.team1, 7, 2)?.name" placeholder="Naam speler" name="match7team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
+        </ion-col>
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
             getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 7, 1)"
-              [value]="getPlayer(competition.team2, 7, 1)?.name" placeholder="Naam speler" name="match7team2position1" style="width: 100%; padding-left: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
+            [value]="getPlayer(competition.team2, 7, 1)?.name" placeholder="Naam speler" name="match7team2position1" style="width: 100%; padding-left: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
             getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 7, 2)"
-              [value]="getPlayer(competition.team2, 7, 2)?.name" placeholder="Naam speler" name="match7team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
-          </td>
+            [value]="getPlayer(competition.team2, 7, 2)?.name" placeholder="Naam speler" name="match7team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
-            getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
-            getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), getPlayer(competition.team2, 7, 1), getPlayer(competition.team2,
-              7, 2), 'DOUBLE').games[0].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1,
-              7, 2), getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
-            getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
-            getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), getPlayer(competition.team2, 7, 1), getPlayer(competition.team2,
-              7, 2), 'DOUBLE').games[1].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1,
-              7, 2), getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
-            getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
-            getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), getPlayer(competition.team2, 7, 1), getPlayer(competition.team2,
-              7, 2), 'DOUBLE').games[2].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1,
-              7, 2), getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-width: 1px; border-bottom-style: solid;">
+        <ion-col col-1 style="display: flex; justify-content: center; align-items: center; font-weight: bold">GD2</ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
-            getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE') && getPlayer(competition.team1, 7, 1) && getPlayer(competition.team1,
-            7, 2) && getPlayer(competition.team2, 7, 1) && getPlayer(competition.team2, 7, 2) && hasAuthority" class="btn btn-primary
-            " (click)="startMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), getPlayer(competition.team2,
-            7, 1), getPlayer(competition.team2, 7, 2), 'MIX') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
-            getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE') && !getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
-            getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
-            getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
-            getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 7, 1), getPlayer(competition.team1, 7, 2), 
-            getPlayer(competition.team2, 7, 1), getPlayer(competition.team2, 7, 2), 'DOUBLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">GD2</th>
-
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
             getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 8, 1)"
-              [value]="getPlayer(competition.team1, 8, 1)?.name" placeholder="Naam speler" name="match8team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
+            [value]="getPlayer(competition.team1, 8, 1)?.name" placeholder="Naam speler" name="match8team1position1" style="width: 100%; text-align: right; padding-right: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
             getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team1, 8, 2)"
-              [value]="getPlayer(competition.team1, 8, 2)?.name" placeholder="Naam speler" name="match8team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
-          </td>
-          <td>
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
+            [value]="getPlayer(competition.team1, 8, 2)?.name" placeholder="Naam speler" name="match8team1position2" style="width: 100%; text-align: right; padding-right: 15px; margin-top: 10px;">
+        </ion-col>
+        <ion-col col-5>
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
             getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 8, 1)"
-              [value]="getPlayer(competition.team2, 8, 1)?.name" placeholder="Naam speler" name="match8team2position1" style="width: 100%; padding-left: 15px;">
-            <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
+            [value]="getPlayer(competition.team2, 8, 1)?.name" placeholder="Naam speler" name="match8team2position1" style="width: 100%; padding-left: 15px;">
+          <input [disabled]="!hasAuthority || getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
             getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE')" (change)="updateCompetitionPlayer($event.target.value, competition.team2, 8, 2)"
-              [value]="getPlayer(competition.team2, 8, 2)?.name" placeholder="Naam speler" name="match8team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
-          </td>
+            [value]="getPlayer(competition.team2, 8, 2)?.name" placeholder="Naam speler" name="match8team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
+        </ion-col>
 
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
-            getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
-            getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE').games[0]">
-              {{getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), getPlayer(competition.team2, 8, 1), getPlayer(competition.team2,
-              8, 2), 'DOUBLE').games[0].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1,
-              8, 2), getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE').games[0].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
-            getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
-            getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE').games[1]">
-              {{getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), getPlayer(competition.team2, 8, 1), getPlayer(competition.team2,
-              8, 2), 'DOUBLE').games[1].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1,
-              8, 2), getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE').games[1].pointsTeam2}}
-            </ng-container>
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            <ng-container *ngIf="getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
-            getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE') && getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
-            getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE').games[2]">
-              {{getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), getPlayer(competition.team2, 8, 1), getPlayer(competition.team2,
-              8, 2), 'DOUBLE').games[2].pointsTeam1 + '-' + getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1,
-              8, 2), getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE').games[2].pointsTeam2}}
-            </ng-container>
-          </td>
-
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="!getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
-            getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE') && getPlayer(competition.team1, 8, 1) && getPlayer(competition.team1,
-            8, 2) && getPlayer(competition.team2, 8, 1) && getPlayer(competition.team2, 8, 2) && hasAuthority" class="btn btn-primary
-            " (click)="startMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), getPlayer(competition.team2,
-            8, 1), getPlayer(competition.team2, 8, 2), 'MIX') ">
-              Start Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
-            getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE') && !getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
-            getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE').matchFinished " class="btn
-            btn-primary " (click)="viewMatch(getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
-            getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE')) ">
-              Bekijk Wedstrijd
-            </button>
-            <button *ngIf="getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
-            getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE') && hasAuthority" class="btn
-            btn-danger " (click)="deleteMatch(getMatch(getPlayer(competition.team1, 8, 1), getPlayer(competition.team1, 8, 2), 
-            getPlayer(competition.team2, 8, 1), getPlayer(competition.team2, 8, 2), 'DOUBLE'))">
-              Verwijder Wedstrijd
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" style="width: 50px; text-align: center; vertical-align: middle">Score</th>
-          <td style="text-align: right; vertical-align: middle;" [ngStyle]="{'font-weight': getFontWeight(competition.matchesWonTeam1, competition.matchesWonTeam2)}">
-            {{competition.matchesWonTeam1}}
-          </td>
-          <td style="text-align: left; vertical-align: middle" [ngStyle]="{'font-weight': getFontWeight(competition.matchesWonTeam2, competition.matchesWonTeam1)}">
-            {{competition.matchesWonTeam2}}
-          </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td style="text-align: center; vertical-align: middle">
-            <button *ngIf="hasAuthority" class="btn btn-danger" (click)="deleteCompetition()">
-              Verwijder competitiepartij
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <button ion-button block color="danger" *ngIf="hasAuthority" (click)="deleteCompetition()">
+          Verwijder competitiepartij
+        </button>
+      </ion-row>
+    </ion-grid>
   </div>
 </ion-content>
