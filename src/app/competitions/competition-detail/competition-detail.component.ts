@@ -5,9 +5,10 @@ import { CompetitionService } from '../competition.service';
 import { CompetitionPlayer } from '../competition-player';
 import { BadmintonMatch } from '../../matches/badminton-match';
 import { MatchService } from '../../matches/match.service';
-import { Nav, NavParams, ToastController } from 'ionic-angular';
+import { Nav, NavParams, ToastController, Platform, ViewController, ModalController } from 'ionic-angular';
 import { CompetitionListComponent } from '../competition-list/competition-list.component';
 import { MatchDetailComponent } from '../../matches/match-detail/match-detail.component';
+import { CompetitionModal } from '../competition-modal';
 
 @Component({
   selector: 'bme-competition-detail',
@@ -19,8 +20,8 @@ export class CompetitionDetailComponent implements OnInit {
   competition: Competition;
   userCompetitions: Competition[];
 
-  constructor(private _userService: UserService, private _competitionService: CompetitionService, private _matchService: MatchService,
-    private _nav: Nav, private _navParams: NavParams, private _toastCtrl: ToastController) { }
+  constructor(private _userService: UserService, private _competitionService: CompetitionService,
+    public _nav: Nav, private _navParams: NavParams, private _toastCtrl: ToastController, public modalCtrl: ModalController) { }
 
   ngOnInit() {
     const id = +this._navParams.get('id');
@@ -83,48 +84,6 @@ export class CompetitionDetailComponent implements OnInit {
       }
     }
     return null;
-  }
-
-  startMatch(player1team1: CompetitionPlayer, player2team1: CompetitionPlayer,
-    player1team2: CompetitionPlayer, player2team2: CompetitionPlayer, type: string) {
-    if (!player2team1 && !player2team2) {
-      player2team1 = new CompetitionPlayer(null, null, null, null);
-      player2team2 = new CompetitionPlayer(null, null, null, null);
-    }
-    this._userService.getUser()
-      .then(prop => {
-        if (prop[0] && prop[1]) {
-          this._competitionService.createMatch(new BadmintonMatch(this.competition.title, type,
-            player1team1.name, player1team2.name, player2team1.name, player2team2.name, this.competition.street, this.competition.city, null),
-            +prop[0], this.competition.id)
-            .subscribe(
-              badmintonMatch => {
-                if (badmintonMatch) {
-                  this._nav.push(MatchDetailComponent, { 'id': badmintonMatch.id });
-                }
-              },
-              error => {
-                this.showError(error);
-              });
-        }
-      });
-  }
-
-  viewMatch(match: BadmintonMatch) {
-    this._nav.push(MatchDetailComponent, { 'id': match.id });
-  }
-
-  deleteMatch(match: BadmintonMatch) {
-    this._matchService.deleteMatch(match.id)
-      .subscribe(
-        badmintonMatch => {
-          if (!badmintonMatch) {
-            this.initialize(this.competition.id);
-          }
-        },
-        error => {
-          this.showError(error);
-        });
   }
 
   updateCompetition() {
@@ -251,6 +210,139 @@ export class CompetitionDetailComponent implements OnInit {
       return 'bold';
     }
     return null;
+  }
+
+  openCompetitionDetailModal(matchNumber: number, matchDescription: string, matchType: string) {
+    let competitionModal: CompetitionModal;
+    let match: BadmintonMatch;
+
+    if (matchType === 'MEN_SINGLE' || matchType === 'WOMEN_SINGLE') {
+      match = this.getMatch(this.getPlayer(this.competition.team1, matchNumber, 1), null,
+        this.getPlayer(this.competition.team2, matchNumber, 1), null, 'SINGLE');
+
+      competitionModal = new CompetitionModal(this.competition, match, matchDescription, matchType, this.getPlayer(this.competition.team1, matchNumber, 1), this.getPlayer(this.competition.team2, matchNumber, 1), null, null);
+    } else {
+      match = this.getMatch(this.getPlayer(this.competition.team1, matchNumber, 1), this.getPlayer(this.competition.team1, matchNumber, 2),
+        this.getPlayer(this.competition.team2, matchNumber, 1), this.getPlayer(this.competition.team2, matchNumber, 2), 'DOUBLE');
+
+      competitionModal = new CompetitionModal(this.competition, match, matchDescription, matchType, this.getPlayer(this.competition.team1, matchNumber, 1),
+        this.getPlayer(this.competition.team2, matchNumber, 1), this.getPlayer(this.competition.team1, matchNumber, 2),
+        this.getPlayer(this.competition.team2, matchNumber, 2));
+    }
+
+    this._nav.push(CompetitionDetailModal, { 'modal': competitionModal });
+    /*let modal = this.modalCtrl.create(CompetitionDetailModal, { 'modal': competitionModal });
+    modal.present();*/
+  }
+
+  showError(message: string) {
+    let toast = this._toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top',
+      cssClass: "toast-danger"
+    });
+    toast.present(toast);
+  }
+}
+
+@Component({
+  templateUrl: './competition-detail-modal.html'
+})
+export class CompetitionDetailModal {
+  modal: CompetitionModal;
+  canStart = false;
+  canView = false;
+  canDelete = false;
+
+  constructor(private _nav: Nav, public _navParams: NavParams,
+    private _userService: UserService, private _competitionService: CompetitionService, private _matchService: MatchService,
+    private _toastCtrl: ToastController) {
+    this.modal = this._navParams.get('modal');
+    this.convertToMinutes();
+    this.checkAuthority();
+  }
+
+  convertToMinutes() {
+    if (this.modal.match && this.modal.match.matchCreated) {
+      const eventStartTime = new Date(this.modal.match.matchCreated);
+      const dateNow = new Date();
+      let duration = dateNow.valueOf() - eventStartTime.valueOf();
+      duration = Math.floor(duration / (1000 * 60) % 60);
+      if (duration !== 0) {
+        (<any>this.modal.match).duration = duration;
+      } else {
+        (<any>this.modal.match).duration = '0';
+      }
+    }
+  }
+
+  startMatch() {
+    if (this.modal.matchType === 'MEN_SINGLE' || this.modal.matchType === 'WOMEN_SINGLE') {
+      this.modal.player3 = new CompetitionPlayer(null, null, null, null);
+      this.modal.player4 = new CompetitionPlayer(null, null, null, null);
+    }
+
+    this._userService.getUser()
+      .then(prop => {
+        if (prop[0] && prop[1]) {
+          this._competitionService.createMatch(new BadmintonMatch(this.modal.competition.title, this.modal.matchType,
+            this.modal.player1.name, this.modal.player2.name, this.modal.player3.name, this.modal.player4.name, this.modal.competition.street, this.modal.competition.city, null),
+            +prop[0], this.modal.competition.id)
+            .subscribe(
+              badmintonMatch => {
+                if (badmintonMatch) {
+                  this._nav.push(MatchDetailComponent, { 'id': badmintonMatch.id });
+                }
+              },
+              error => {
+                this.showError(error);
+              });
+        }
+      });
+  }
+
+  viewMatch() {
+    this._nav.push(MatchDetailComponent, { 'id': this.modal.match.id });
+  }
+
+  deleteMatch() {
+    this._matchService.deleteMatch(this.modal.match.id)
+      .subscribe(
+        badmintonMatch => {
+          if (!badmintonMatch) {
+            this._nav.push(CompetitionDetailComponent, { 'id': this.modal.competition.id });
+          }
+        },
+        error => {
+          this.showError(error);
+        });
+  }
+
+  checkAuthority() {
+    if (this.modal.match) {
+      this.canView = true;
+    }
+    this._userService.getUser()
+      .then(prop => {
+        if (prop[0] && prop[1]) {
+          if (this.modal.match) {
+            this.canDelete = true;
+          } else {
+            if (this.modal.matchType === 'MEN_SINGLE' || this.modal.matchType === 'WOMEN_SINGLE' &&
+              this.modal.player1 && this.modal.player2) {
+              this.canStart = true;
+            } else if (this.modal.matchType !== 'MEN_SINGLE' && this.modal.matchType !== 'WOMEN_SINGLE' &&
+              this.modal.player1 && this.modal.player2 && this.modal.player3 && this.modal.player4) {
+              this.canStart = true;
+            }
+          }
+        }
+      });
+  }
+
+  dismiss() {
+    this._nav.push(CompetitionDetailComponent, { 'id': this.modal.competition.id });
   }
 
   showError(message: string) {

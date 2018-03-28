@@ -25,7 +25,7 @@ import { TournamentService } from './tournaments/tournament.service';
 import { CompetitionService } from './competitions/competition.service';
 import { CompetitionListComponent } from './competitions/competition-list/competition-list.component';
 import { CompetitionCreateComponent } from './competitions/competition-create/competition-create.component';
-import { CompetitionDetailComponent } from './competitions/competition-detail/competition-detail.component';
+import { CompetitionDetailComponent, CompetitionDetailModal } from './competitions/competition-detail/competition-detail.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +43,8 @@ import { CompetitionDetailComponent } from './competitions/competition-detail/co
     TournamentDetailComponent,
     CompetitionListComponent,
     CompetitionCreateComponent,
-    CompetitionDetailComponent
+    CompetitionDetailComponent,
+    CompetitionDetailModal
 ],
   imports: [
     BrowserModule,
@@ -67,7 +68,8 @@ import { CompetitionDetailComponent } from './competitions/competition-detail/co
     TournamentDetailComponent,
     CompetitionListComponent,
     CompetitionCreateComponent,
-    CompetitionDetailComponent
+    CompetitionDetailComponent,
+    CompetitionDetailModal
   ],
   providers: [
     UserService,

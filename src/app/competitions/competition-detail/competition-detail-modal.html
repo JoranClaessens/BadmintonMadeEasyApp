@@ -1,0 +1,70 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            {{modal?.matchDescription}}
+        </ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="dismiss()">
+                <span ion-text color="primary" showWhen="ios">Terug</span>
+                <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-list *ngIf="modal">
+        <ion-item>
+            <ng-container *ngIf="modal.match">
+                <p style="float: left;">{{modal.match.title}}</p>
+                <p style="text-align: right" *ngIf="modal.match.matchCreated && !modal.match.matchFinished && modal.match.duration > 1">{{modal.match.duration}} minuten bezig...</p>
+                <p style="text-align: right" *ngIf="modal.match.matchCreated && !modal.match.matchFinished && modal.match.duration === '0'">&lt; 1 minuut bezig...</p>
+                <p style="text-align: right" *ngIf="modal.match.matchCreated && !modal.match.matchFinished && modal.match.duration === 1">1 minuut bezig...</p>
+                <p style="text-align: right" *ngIf="!modal.match.matchCreated">Moet nog starten...</p>
+                <p style="text-align: right" *ngIf="modal.match.matchFinished">{{modal.match.matchFinished | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+            </ng-container>
+
+            <ion-grid>
+                <ion-row>
+                    <ion-col col-5 style="text-align: right">
+                        {{modal.player1?.name}}
+                        <br>{{modal.player3?.name}}
+                    </ion-col>
+                    <ion-col center col-2 style="text-align: center">
+                        vs
+                    </ion-col>
+                    <ion-col col-5 style="text-align: left">
+                        {{modal.player2?.name}}
+                        <br>{{modal.player4?.name}}
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-item>
+
+        <ng-container *ngIf="modal.match">
+            <ion-item *ngFor="let game of modal.match.games">
+                Set {{game.gamePk.gameId}}
+                <ion-note item-end>
+                    {{game.pointsTeam1}} - {{game.pointsTeam2}}
+                </ion-note>
+            </ion-item>
+        </ng-container>
+
+        <ion-item *ngIf="canStart">
+            <button ion-button block large color="primary" (click)="startMatch()">
+                Start Wedstrijd
+            </button>
+        </ion-item>
+
+        <ion-item *ngIf="canView">
+            <button ion-button block large color="primary" (click)="viewMatch() ">
+                Bekijk Wedstrijd
+            </button>
+        </ion-item>
+
+        <ion-item *ngIf="canDelete">
+            <button ion-button block large color="danger" (click)="deleteMatch()">
+                Verwijder Wedstrijd
+            </button>
+        </ion-item>
+    </ion-list>
+</ion-content>
