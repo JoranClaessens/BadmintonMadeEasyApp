@@ -5,7 +5,7 @@ import { CompetitionService } from '../competition.service';
 import { CompetitionPlayer } from '../competition-player';
 import { BadmintonMatch } from '../../matches/badminton-match';
 import { MatchService } from '../../matches/match.service';
-import { Nav, NavParams, ToastController, Platform, ViewController, ModalController } from 'ionic-angular';
+import { Nav, NavParams, ToastController } from 'ionic-angular';
 import { CompetitionListComponent } from '../competition-list/competition-list.component';
 import { MatchDetailComponent } from '../../matches/match-detail/match-detail.component';
 import { CompetitionModal } from '../competition-modal';
@@ -21,7 +21,7 @@ export class CompetitionDetailComponent implements OnInit {
   userCompetitions: Competition[];
 
   constructor(private _userService: UserService, private _competitionService: CompetitionService,
-    public _nav: Nav, private _navParams: NavParams, private _toastCtrl: ToastController, public modalCtrl: ModalController) { }
+    public _nav: Nav, private _navParams: NavParams, private _toastCtrl: ToastController) { }
 
   ngOnInit() {
     const id = +this._navParams.get('id');
@@ -216,23 +216,22 @@ export class CompetitionDetailComponent implements OnInit {
     let competitionModal: CompetitionModal;
     let match: BadmintonMatch;
 
-    if (matchType === 'MEN_SINGLE' || matchType === 'WOMEN_SINGLE') {
+    if ((matchType === 'MEN_SINGLE' || matchType === 'WOMEN_SINGLE') && this.getPlayer(this.competition.team1, matchNumber, 1) && this.getPlayer(this.competition.team2, matchNumber, 1)) {
       match = this.getMatch(this.getPlayer(this.competition.team1, matchNumber, 1), null,
         this.getPlayer(this.competition.team2, matchNumber, 1), null, 'SINGLE');
 
       competitionModal = new CompetitionModal(this.competition, match, matchDescription, matchType, this.getPlayer(this.competition.team1, matchNumber, 1), this.getPlayer(this.competition.team2, matchNumber, 1), null, null);
-    } else {
+      this._nav.push(CompetitionDetailModal, { 'modal': competitionModal });
+    } else if (matchType !== 'MEN_SINGLE' && matchType !== 'WOMEN_SINGLE' && this.getPlayer(this.competition.team1, matchNumber, 1) && this.getPlayer(this.competition.team2, matchNumber, 1) &&
+      this.getPlayer(this.competition.team1, matchNumber, 2) && this.getPlayer(this.competition.team2, matchNumber, 2)) {
       match = this.getMatch(this.getPlayer(this.competition.team1, matchNumber, 1), this.getPlayer(this.competition.team1, matchNumber, 2),
         this.getPlayer(this.competition.team2, matchNumber, 1), this.getPlayer(this.competition.team2, matchNumber, 2), 'DOUBLE');
 
       competitionModal = new CompetitionModal(this.competition, match, matchDescription, matchType, this.getPlayer(this.competition.team1, matchNumber, 1),
         this.getPlayer(this.competition.team2, matchNumber, 1), this.getPlayer(this.competition.team1, matchNumber, 2),
         this.getPlayer(this.competition.team2, matchNumber, 2));
+      this._nav.push(CompetitionDetailModal, { 'modal': competitionModal });
     }
-
-    this._nav.push(CompetitionDetailModal, { 'modal': competitionModal });
-    /*let modal = this.modalCtrl.create(CompetitionDetailModal, { 'modal': competitionModal });
-    modal.present();*/
   }
 
   showError(message: string) {
@@ -329,7 +328,7 @@ export class CompetitionDetailModal {
           if (this.modal.match) {
             this.canDelete = true;
           } else {
-            if (this.modal.matchType === 'MEN_SINGLE' || this.modal.matchType === 'WOMEN_SINGLE' &&
+            if ((this.modal.matchType === 'MEN_SINGLE' || this.modal.matchType === 'WOMEN_SINGLE') &&
               this.modal.player1 && this.modal.player2) {
               this.canStart = true;
             } else if (this.modal.matchType !== 'MEN_SINGLE' && this.modal.matchType !== 'WOMEN_SINGLE' &&

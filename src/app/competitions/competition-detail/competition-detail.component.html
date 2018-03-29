@@ -64,7 +64,7 @@
             [value]="getPlayer(competition.team2, 2, 2)?.name" placeholder="Naam speler" name="match2team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(2, 'Heren dubbel 2', 'MEN_DOUBLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -88,7 +88,7 @@
             [value]="getPlayer(competition.team2, 3, 2)?.name" placeholder="Naam speler" name="match3team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(3, 'Heren dubbel 3', 'MEN_DOUBLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -112,7 +112,7 @@
             [value]="getPlayer(competition.team2, 4, 2)?.name" placeholder="Naam speler" name="match4team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(4, 'Heren dubbel 4', 'MEN_DOUBLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -130,7 +130,7 @@
             [value]="getPlayer(competition.team2, 5, 1)?.name" placeholder="Naam speler" name="match5team2position1" style="width: 100%; padding-left: 15px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(5, 'Heren enkel 1', 'MEN_SINGLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -148,7 +148,7 @@
             [value]="getPlayer(competition.team2, 6, 1)?.name" placeholder="Naam speler" name="match6team2position1" style="width: 100%; padding-left: 16px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(6, 'Heren enkel 2', 'MEN_SINGLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -166,7 +166,7 @@
             [value]="getPlayer(competition.team2, 7, 1)?.name" placeholder="Naam speler" name="match7team2position1" style="width: 100%; padding-left: 17px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(7, 'Heren enkel 3', 'MEN_SINGLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -184,7 +184,7 @@
             [value]="getPlayer(competition.team2, 8, 1)?.name" placeholder="Naam speler" name="match8team2position1" style="width: 100%; padding-left: 18px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(8, 'Heren enkel 4', 'MEN_SINGLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -222,7 +222,7 @@
             [value]="getPlayer(competition.team2, 1, 2)?.name" placeholder="Naam speler" name="match1team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(1, 'Dames dubbel 1', 'WOMEN_DOUBLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -246,7 +246,7 @@
             [value]="getPlayer(competition.team2, 2, 2)?.name" placeholder="Naam speler" name="match2team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(2, 'Dames dubbel 2', 'WOMEN_DOUBLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -270,7 +270,7 @@
             [value]="getPlayer(competition.team2, 3, 2)?.name" placeholder="Naam speler" name="match3team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(3, 'Dames dubbel 3', 'WOMEN_DOUBLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -294,7 +294,7 @@
             [value]="getPlayer(competition.team2, 4, 2)?.name" placeholder="Naam speler" name="match4team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(4, 'Dames dubbel 4', 'WOMEN_DOUBLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -312,7 +312,7 @@
             [value]="getPlayer(competition.team2, 5, 1)?.name" placeholder="Naam speler" name="match5team2position1" style="width: 100%; padding-left: 15px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(5, 'Dames enkel 1', 'WOMEN_SINGLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -330,7 +330,7 @@
             [value]="getPlayer(competition.team2, 6, 1)?.name" placeholder="Naam speler" name="match6team2position1" style="width: 100%; padding-left: 16px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(6, 'Dames enkel 2', 'WOMEN_SINGLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -348,7 +348,7 @@
             [value]="getPlayer(competition.team2, 7, 1)?.name" placeholder="Naam speler" name="match7team2position1" style="width: 100%; padding-left: 17px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(7, 'Dames enkel 3', 'WOMEN_SINGLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -366,7 +366,7 @@
             [value]="getPlayer(competition.team2, 8, 1)?.name" placeholder="Naam speler" name="match8team2position1" style="width: 100%; padding-left: 18px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(8, 'Dames enkel 4', 'WOMEN_SINGLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -404,7 +404,7 @@
             [value]="getPlayer(competition.team2, 1, 2)?.name" placeholder="Naam speler" name="match1team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(1, 'Heren dubbel', 'MEN_DOUBLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -428,7 +428,7 @@
             [value]="getPlayer(competition.team2, 2, 2)?.name" placeholder="Naam speler" name="match2team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(2, 'Dames dubbel', 'WOMEN_DOUBLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -446,7 +446,7 @@
             [value]="getPlayer(competition.team2, 3, 1)?.name" placeholder="Naam speler" name="match3team2position1" style="width: 100%; padding-left: 13px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(3, 'Heren enkel 1', 'MEN_SINGLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -464,7 +464,7 @@
             [value]="getPlayer(competition.team2, 4, 1)?.name" placeholder="Naam speler" name="match4team2position1" style="width: 100%; padding-left: 14px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(4, 'Heren enkel 2', 'MEN_SINGLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -482,7 +482,7 @@
             [value]="getPlayer(competition.team2, 5, 1)?.name" placeholder="Naam speler" name="match5team2position1" style="width: 100%; padding-left: 15px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(5, 'Dames enkel 1', 'WOMEN_SINGLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -500,7 +500,7 @@
             [value]="getPlayer(competition.team2, 6, 1)?.name" placeholder="Naam speler" name="match6team2position1" style="width: 100%; padding-left: 16px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(6, 'Dames enkel 2', 'WOMEN_SINGLE')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -524,7 +524,7 @@
             [value]="getPlayer(competition.team2, 7, 2)?.name" placeholder="Naam speler" name="match7team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(7, 'Gemengd dubbel 1', 'MIX')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
@@ -548,7 +548,7 @@
             [value]="getPlayer(competition.team2, 8, 2)?.name" placeholder="Naam speler" name="match8team2position2" style="width: 100%; padding-left: 15px; margin-top: 10px;">
         </ion-col>
 
-        <ion-col (click)="showError('test')" col-1 style="display: flex; justify-content: center; align-items: center;">
+        <ion-col (click)="openCompetitionDetailModal(8, 'Gemengd dubbel 2', 'MIX')" col-1 style="display: flex; justify-content: center; align-items: center;">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-col>
       </ion-row>
