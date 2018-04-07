@@ -15,12 +15,21 @@
     <ion-list *ngIf="modal">
         <ion-item>
             <ng-container *ngIf="modal.match">
-                <p style="float: left;">{{modal.match.title}}</p>
-                <p style="text-align: right" *ngIf="modal.match.matchCreated && !modal.match.matchFinished && modal.match.duration > 1">{{modal.match.duration}} minuten bezig...</p>
-                <p style="text-align: right" *ngIf="modal.match.matchCreated && !modal.match.matchFinished && modal.match.duration === '0'">&lt; 1 minuut bezig...</p>
-                <p style="text-align: right" *ngIf="modal.match.matchCreated && !modal.match.matchFinished && modal.match.duration === 1">1 minuut bezig...</p>
-                <p style="text-align: right" *ngIf="!modal.match.matchCreated">Moet nog starten...</p>
-                <p style="text-align: right" *ngIf="modal.match.matchFinished">{{modal.match.matchFinished | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+                <ion-grid style="margin-bottom: -10px;">
+                    <ion-row>
+                        <ion-col col-6 text-wrap>
+                            <p style="float: left;">{{modal.match.title}}</p>
+                        </ion-col>
+                        <ion-col col-6>
+                            <p style="text-align: right" *ngIf="modal.match.matchCreated && !modal.match.matchFinished && modal.match.duration > 1">{{modal.match.duration}} minuten bezig...</p>
+                            <p style="text-align: right" *ngIf="modal.match.matchCreated && !modal.match.matchFinished && modal.match.duration === '0'">&lt; 1 minuut bezig...</p>
+                            <p style="text-align: right" *ngIf="match.matchCreated && !match.matchFinished && match.duration === '-1'">&gt; 60 minuten bezig...</p>
+                            <p style="text-align: right" *ngIf="modal.match.matchCreated && !modal.match.matchFinished && modal.match.duration === 1">1 minuut bezig...</p>
+                            <p style="text-align: right" *ngIf="!modal.match.matchCreated">Moet nog starten...</p>
+                            <p style="text-align: right" *ngIf="modal.match.matchFinished">{{modal.match.matchFinished | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
             </ng-container>
 
             <ion-grid>

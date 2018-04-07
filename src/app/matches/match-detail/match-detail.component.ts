@@ -77,14 +77,18 @@ export class MatchDetailComponent implements OnInit {
   }
 
   deleteMatch() {
+    this.stopPolling = true;
     this._matchService.deleteMatch(this.match.id)
       .subscribe(
         badmintonmatch => {
           if (!badmintonmatch) {
+            this.showSuccess('Wedstrijd succesvol verwijdert!');
             this._nav.push(MatchListComponent);
           }
         },
         error => {
+          this.stopPolling = false;
+          this.checkGame();
           this.showError(error);
         });
   }
@@ -113,6 +117,16 @@ export class MatchDetailComponent implements OnInit {
       return 'bold';
     }
     return null;
+  }
+
+  showSuccess(message: string) {
+    let toast = this._toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top',
+      cssClass: "toast-success"
+    });
+    toast.present(toast);
   }
 
   showError(message: string) {

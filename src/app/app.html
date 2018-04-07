@@ -28,6 +28,9 @@
       <button menuClose ion-item *ngIf="user" (click)="logout()">
         Afmelden
       </button>
+      <button menuClose ion-item *ngIf="user">
+        {{user.email}}
+      </button>
     </ion-list>
   </ion-content>
 

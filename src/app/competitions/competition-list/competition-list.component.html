@@ -13,10 +13,10 @@
   <ion-list (swipe)="swipeEvent($event)">
     <ion-grid>
       <ion-row>
-        <ion-col (click)="loadAllCompetitions()" style="font-size: 18px; text-align: center" [ngStyle]="{'background': selectedMatchTab === 1 ? '#488aff' : '#679fff'}">
+        <ion-col (click)="loadAllCompetitions()" style="font-size: 18px; text-align: center" [ngStyle]="{'background': selectedCompetitionTab === 1 ? '#488aff' : '#679fff'}">
           <a style="color: white">Alle competities</a>
         </ion-col>
-        <ion-col (click)="loadUserCompetitions()" style="font-size: 18px; text-align: center" [ngStyle]="{'background': selectedMatchTab === 2 ? '#488aff' : '#679fff'}">
+        <ion-col (click)="loadUserCompetitions()" style="font-size: 18px; text-align: center" [ngStyle]="{'background': selectedCompetitionTab === 2 ? '#488aff' : '#679fff'}">
           <a style="color: white">Jouw competities</a>
           <ion-badge item-end color="danger">{{userCompetitionsCount}}</ion-badge>
         </ion-col>
@@ -26,8 +26,17 @@
       </ion-row>
     </ion-grid>
     <ion-item *ngFor="let competition of competitions" (click)="competitionDetail(competition.id)">
-      <p style="float: left;">{{competition.title}}</p>
-      <p style="text-align: right">{{competition.startDate | date: 'dd/MM/yyyy'}}</p>
+      <ion-grid style="margin-bottom: -10px;">
+        <ion-row>
+          <ion-col col-8 text-wrap>
+            <p>{{competition.title}}</p>
+          </ion-col>
+          <ion-col col-4>
+            <p style="text-align: right">{{competition.startDate | date: 'dd/MM/yyyy'}}</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
       <ion-grid>
         <ion-row>
           <ion-col col-5 style="text-align: right">

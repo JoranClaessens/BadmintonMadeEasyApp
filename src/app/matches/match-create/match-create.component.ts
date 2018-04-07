@@ -28,24 +28,37 @@ export class MatchCreateComponent implements OnInit {
   }
 
   createMatch() {
-    this._userService.getUser()
-      .then(prop => {
-        if (prop[0] && prop[1]) {
-          this._matchService.createMatch(new BadmintonMatch(this.matchTitle, this.selectedMatchType,
-            this.player1, this.player2, this.player3, this.player4, this.street, this.city, this.terrainNumber),
-            +prop[0])
-            .subscribe(
-              badmintonMatch => {
-                if (badmintonMatch) {
-                  this.showSuccess('Wedstrijd succesvol aangemaakt!');
-                  this.clearForm();
-                }
-              },
-              error => {
-                this.showError(error);
-              });
-        }
-      });
+    if (this.isValid()) {
+      this._userService.getUser()
+        .then(prop => {
+          if (prop[0] && prop[1]) {
+            this._matchService.createMatch(new BadmintonMatch(this.matchTitle, this.selectedMatchType,
+              this.player1, this.player2, this.player3, this.player4, this.street, this.city, this.terrainNumber),
+              +prop[0])
+              .subscribe(
+                badmintonMatch => {
+                  if (badmintonMatch) {
+                    this.showSuccess('Wedstrijd succesvol aangemaakt!');
+                    this.clearForm();
+                  }
+                },
+                error => {
+                  this.showError(error);
+                });
+          }
+        });
+    } else {
+      this.showError('Gelieve alle verplichte velden in te vullen!');
+    }
+  }
+
+  isValid(): boolean {
+    if (this.matchTitle && this.player1 && this.player2
+      && ((this.selectedMatchType === 'MEN_SINGLE' || this.selectedMatchType === 'WOMEN_SINGLE')
+        || (this.selectedMatchType !== 'MEN_SINGLE' && this.selectedMatchType !== 'WOMEN_SINGLE' && this.player3 && this.player4))) {
+      return true;
+    }
+    return false;
   }
 
   showError(message: string) {

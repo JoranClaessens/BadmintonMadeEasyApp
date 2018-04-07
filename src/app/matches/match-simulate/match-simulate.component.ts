@@ -4,7 +4,7 @@ import { Game } from '../game';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatchService } from '../match.service';
 import { GamePK } from '../gamePk';
-import { NavParams } from 'ionic-angular';
+import { NavParams, ToastController } from 'ionic-angular';
 
 @Component({
   selector: 'bme-match-simulate',
@@ -25,7 +25,7 @@ export class MatchSimulateComponent implements OnInit {
   showSwitch3Btn = false;
   showSwitch4Btn = false;
 
-  constructor(private _matchService: MatchService, private _navParams: NavParams) { }
+  constructor(private _matchService: MatchService, private _navParams: NavParams, private _toastCtrl: ToastController) { }
 
   ngOnInit() {
     this.serviceTeam1 = true;
@@ -59,7 +59,7 @@ export class MatchSimulateComponent implements OnInit {
     this._matchService.updateMatch(this.match)
       .subscribe(
         badmintonMatch => {
-          console.log('test');
+          this.showSuccess('Wedstrijd afgelopen om ' + badmintonMatch.matchFinished.toDateString());
         },
         error => {
           this.errorMessage = <any>error;
@@ -251,5 +251,15 @@ export class MatchSimulateComponent implements OnInit {
       return 'bold';
     }
     return null;
+  }
+
+  showSuccess(message: string) {
+    let toast = this._toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top',
+      cssClass: "toast-success"
+    });
+    toast.present(toast);
   }
 }

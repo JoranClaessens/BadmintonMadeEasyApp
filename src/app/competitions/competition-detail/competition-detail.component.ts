@@ -267,11 +267,15 @@ export class CompetitionDetailModal {
       const eventStartTime = new Date(this.modal.match.matchCreated);
       const dateNow = new Date();
       let duration = dateNow.valueOf() - eventStartTime.valueOf();
-      duration = Math.floor(duration / (1000 * 60) % 60);
-      if (duration !== 0) {
-        (<any>this.modal.match).duration = duration;
+      if (duration < 3600000) {
+        duration = Math.floor(duration / (1000 * 60) % 60);
+        if (duration !== 0) {
+          (<any>this.modal.match).duration = duration;
+        } else {
+          (<any>this.modal.match).duration = '0';
+        }
       } else {
-        (<any>this.modal.match).duration = '0';
+        (<any>this.modal.match).duration = '-1';
       }
     }
   }

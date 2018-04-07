@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatchService } from '../match.service';
 import { BadmintonMatch } from '../badminton-match';
 import { UserService } from '../../account/user.service';
 import { Nav, ToastController } from 'ionic-angular';
-import { HomeComponent } from '../../home/home.component';
 import { MatchCreateComponent } from '../match-create/match-create.component';
 import { MatchDetailComponent } from '../match-detail/match-detail.component';
 
@@ -92,7 +91,7 @@ export class MatchListComponent implements OnInit {
   }
 
   matchDetail(id: number) {
-    this._nav.push(MatchDetailComponent, { 'id': id} );
+    this._nav.push(MatchDetailComponent, { 'id': id });
   }
 
   convertToMinutes() {
@@ -101,11 +100,15 @@ export class MatchListComponent implements OnInit {
         const eventStartTime = new Date(match.matchCreated);
         const dateNow = new Date();
         let duration = dateNow.valueOf() - eventStartTime.valueOf();
-        duration = Math.floor(duration / (1000 * 60) % 60);
-        if (duration !== 0) {
-          (<any>match).duration = duration;
+        if (duration < 3600000) {
+          duration = Math.floor(duration / (1000 * 60) % 60);
+          if (duration !== 0) {
+            (<any>match).duration = duration;
+          } else {
+            (<any>match).duration = '0';
+          }
         } else {
-          (<any>match).duration = '0';
+          (<any>match).duration = '-1';
         }
       }
     }

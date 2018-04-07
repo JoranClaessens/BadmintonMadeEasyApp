@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Platform, Nav } from 'ionic-angular';
+import { Platform, Nav, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -20,7 +20,7 @@ export class MyApp implements OnInit {
   rootPage: any = HomeComponent;
   user: User;
 
-  constructor(private _userService: UserService, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(private _userService: UserService, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private _toastCtrl: ToastController) {
     this.initializeApp();
   }
 
@@ -29,8 +29,8 @@ export class MyApp implements OnInit {
       this._userService.getUser()
         .then(prop => {
           if (prop[0] && prop[1]) {
-            this.user = new User(prop[0], null);
-            this.user.id = +prop[1];
+            this.user = new User(prop[1], null);
+            this.user.id = +prop[0];
           } else {
             this.user = null;
           }
@@ -72,8 +72,19 @@ export class MyApp implements OnInit {
   }
 
   logout() {
+    this.showSuccess("Succesvol afgemeld!");
     this.user = null;
     this._userService.setUser(null);
     this.nav.push(HomeComponent);
+  }
+
+  showSuccess(message: string) {
+    let toast = this._toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top',
+      cssClass: "toast-success"
+    });
+    toast.present(toast);
   }
 }
