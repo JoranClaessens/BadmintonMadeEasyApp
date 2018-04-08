@@ -103,7 +103,7 @@ export class TournamentListComponent implements OnInit {
     let toast = this._toastCtrl.create({
       message: message,
       duration: 3000,
-      position: 'top',
+      position: 'bottom',
       cssClass: "toast-danger"
     });
     toast.present(toast);
@@ -113,7 +113,7 @@ export class TournamentListComponent implements OnInit {
     let toast = this._toastCtrl.create({
       message: message,
       duration: 3000,
-      position: 'top',
+      position: 'bottom',
       cssClass: "toast-warning"
     });
     toast.present(toast);

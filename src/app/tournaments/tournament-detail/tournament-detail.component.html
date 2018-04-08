@@ -47,8 +47,8 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
-  <ion-scroll scrollX="true" style="height: 20000px; margin-left: 15px;">
-    <div *ngIf="tournament">
+  <ion-scroll *ngIf="tournament" scrollX="true" [style.height]="getHeight()" style="height: 20000px; margin-left: 15px;">
+    <div>
       <h1 style="margin-bottom: -10px;">{{tournament.title}}</h1>
       <p *ngIf="tournament.street && tournament.city" style="margin-bottom: -10px;">{{tournament.street}}, {{tournament.city}}</p>
       <div class="row">

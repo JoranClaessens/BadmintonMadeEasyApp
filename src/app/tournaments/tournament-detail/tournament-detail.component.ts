@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TournamentPlayer } from '../tournament-player';
-import { MatchService } from '../../matches/match.service';
 import { BadmintonMatch } from '../../matches/badminton-match';
 import { TournamentService } from '../tournament.service';
 import { Tournament } from '../tournament';
@@ -32,7 +31,7 @@ export class TournamentDetailComponent implements OnInit {
   round8: number;
   round9: number;
 
-  constructor(private _tournamentService: TournamentService, private _matchService: MatchService, private _userService: UserService,
+  constructor(private _tournamentService: TournamentService, private _userService: UserService,
     private _nav: Nav, private _navParams: NavParams, private _toastCtrl: ToastController) { }
 
   ngOnInit() {
@@ -305,6 +304,7 @@ export class TournamentDetailComponent implements OnInit {
   }
 
   deleteTournament() {
+    this.stopPolling = true;
     this._tournamentService.deleteTournament(this.tournament.id)
       .subscribe(
         tournament => {
@@ -313,6 +313,7 @@ export class TournamentDetailComponent implements OnInit {
           }
         },
         error => {
+          this.stopPolling = false;
           this.showError(error);
         });
   }
@@ -362,11 +363,40 @@ export class TournamentDetailComponent implements OnInit {
     return styles;
   }
 
+  getHeight() {
+    let height: number;
+
+    if (this.tournament.type !== 'MEN_SINGLE' && this.tournament.type !== 'WOMEN_SINGLE') {
+      height = 74;
+    } else {
+      height = 43;
+    }
+    
+    if (this.tournament.numberOfTeams <= 2) {
+      height *= 4;
+    } else if (this.tournament.numberOfTeams <= 4) {
+      height *= 6;
+    } else if (this.tournament.numberOfTeams <= 8) {
+      height *= 10;
+    } else if (this.tournament.numberOfTeams <= 16) {
+      height *= 17;
+    } else if (this.tournament.numberOfTeams <= 32) {
+      height *= 32;
+    } else if (this.tournament.numberOfTeams <= 64) {
+      height *= 64;
+    } else if (this.tournament.numberOfTeams <= 128) {
+      height *= 123;
+    } else if (this.tournament.numberOfTeams <= 256) {
+      height *= 230;
+    }
+    return height + 'px';
+  }
+
   showError(message: string) {
     let toast = this._toastCtrl.create({
       message: message,
       duration: 3000,
-      position: 'top',
+      position: 'bottom',
       cssClass: "toast-danger"
     });
     toast.present(toast);

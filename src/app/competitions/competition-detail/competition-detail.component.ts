@@ -131,6 +131,7 @@ export class CompetitionDetailComponent implements OnInit {
   }
 
   deleteCompetition() {
+    this.stopPolling = true;
     this._competitionService.deleteCompetition(this.competition.id)
       .subscribe(
         competition => {
@@ -139,6 +140,7 @@ export class CompetitionDetailComponent implements OnInit {
           }
         },
         error => {
+          this.stopPolling = false;
           this.showError(error);
         });
   }
@@ -238,7 +240,7 @@ export class CompetitionDetailComponent implements OnInit {
     let toast = this._toastCtrl.create({
       message: message,
       duration: 3000,
-      position: 'top',
+      position: 'bottom',
       cssClass: "toast-danger"
     });
     toast.present(toast);
@@ -352,7 +354,7 @@ export class CompetitionDetailModal {
     let toast = this._toastCtrl.create({
       message: message,
       duration: 3000,
-      position: 'top',
+      position: 'bottom',
       cssClass: "toast-danger"
     });
     toast.present(toast);

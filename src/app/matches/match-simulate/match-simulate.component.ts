@@ -47,7 +47,7 @@ export class MatchSimulateComponent implements OnInit {
     this._matchService.updateMatch(this.match)
       .subscribe(
         badmintonMatch => {
-          console.log('test');
+          this.showSuccess('Wedstrijd gestart!');
         },
         error => {
           this.errorMessage = <any>error;
@@ -59,7 +59,7 @@ export class MatchSimulateComponent implements OnInit {
     this._matchService.updateMatch(this.match)
       .subscribe(
         badmintonMatch => {
-          this.showSuccess('Wedstrijd afgelopen om ' + badmintonMatch.matchFinished.toDateString());
+          this.showSuccess('Wedstrijd afgelopen!');
         },
         error => {
           this.errorMessage = <any>error;
@@ -141,14 +141,7 @@ export class MatchSimulateComponent implements OnInit {
   }
 
   updateGame() {
-    this._matchService.updateGame(this.currentGame)
-      .subscribe(
-        game => {
-          this.checkGame();
-        },
-        error => {
-          this.errorMessage = <any>error;
-        });
+    this.match.games[this.match.games.length - 1] = this.currentGame;
     this._matchService.updateMatch(this.match)
       .subscribe(
         badmintonMatch => {
@@ -220,6 +213,7 @@ export class MatchSimulateComponent implements OnInit {
           });
     } else {
       this.gameFinished = false;
+      this.matchFinished = false;
     }
   }
 
@@ -257,7 +251,7 @@ export class MatchSimulateComponent implements OnInit {
     let toast = this._toastCtrl.create({
       message: message,
       duration: 3000,
-      position: 'top',
+      position: 'bottom',
       cssClass: "toast-success"
     });
     toast.present(toast);

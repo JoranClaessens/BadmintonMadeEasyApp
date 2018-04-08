@@ -25,6 +25,9 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+    <ion-item *ngIf="tournaments?.length < 1">
+      Geen toernooien gevonden
+    </ion-item>
     <ion-item *ngFor="let tournament of tournaments" (click)="tournamentDetail(tournament.id)">
       <h1>{{tournament.title}}</h1>
       <p>{{tournament.startDate | date : 'dd/MM/yyyy'}} - {{tournament.endDate | date : 'dd/MM/yyyy'}}</p>

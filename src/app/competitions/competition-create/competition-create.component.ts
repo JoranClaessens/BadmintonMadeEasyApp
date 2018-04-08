@@ -25,31 +25,41 @@ export class CompetitionCreateComponent implements OnInit {
   }
 
   createCompetition() {
-    this._userService.getUser()
-      .then(prop => {
-        if (prop[0] && prop[1]) {
-          this._competitionService.createCompetition(new Competition(this.title, this.selectedCompetitionType, this.team1, this.team2,
-            this.startDate, this.street, this.city), +prop[0])
-            .subscribe(
-              competition => {
-                if (competition) {
-                  this.showSuccess('Competitiepartij succesvol aangemaakt!');
-                  this.clearForm();
-                }
-              },
-              error => {
-                this.showError(error);
-              });
-        }
-      });
-    
+    if (this.isValid()) {
+      this._userService.getUser()
+        .then(prop => {
+          if (prop[0] && prop[1]) {
+            this._competitionService.createCompetition(new Competition(this.title, this.selectedCompetitionType, this.team1, this.team2,
+              this.startDate, this.street, this.city), +prop[0])
+              .subscribe(
+                competition => {
+                  if (competition) {
+                    this.showSuccess('Competitiepartij succesvol aangemaakt!');
+                    this.clearForm();
+                  }
+                },
+                error => {
+                  this.showError(error);
+                });
+          }
+        });
+    } else {
+      this.showError('Gelieve alle verplichte velden in te vullen!');
+    }
+  }
+
+  isValid(): boolean {
+    if (this.title && this.selectedCompetitionType !== 'NONE' && this.team1 && this.team2 && this.startDate) {
+      return true;
+    }
+    return false;
   }
 
   showError(message: string) {
     let toast = this._toastCtrl.create({
       message: message,
       duration: 3000,
-      position: 'top',
+      position: 'bottom',
       cssClass: "toast-danger"
     });
     toast.present(toast);
@@ -59,7 +69,7 @@ export class CompetitionCreateComponent implements OnInit {
     let toast = this._toastCtrl.create({
       message: message,
       duration: 3000,
-      position: 'top',
+      position: 'bottom',
       cssClass: "toast-success"
     });
     toast.present(toast);

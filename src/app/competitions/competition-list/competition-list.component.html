@@ -25,6 +25,9 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+    <ion-item *ngIf="competitions?.length < 1">
+      Geen competitiepartijen gevonden
+    </ion-item>
     <ion-item *ngFor="let competition of competitions" (click)="competitionDetail(competition.id)">
       <ion-grid style="margin-bottom: -10px;">
         <ion-row>
