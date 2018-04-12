@@ -12,6 +12,11 @@ import { MatchDetailComponent } from '../match-detail/match-detail.component';
 })
 export class MatchListComponent implements OnInit {
   loggedIn = false;
+  showFilter = false;
+  keyBox = true;
+  nameBox = true;
+  titleBox = true;
+  filterQuery: string;
   selectedMatchTab: number;
   userMatchesCount = 0;
   matches: BadmintonMatch[];
@@ -33,6 +38,7 @@ export class MatchListComponent implements OnInit {
   }
 
   loadAllMatches(userId: number) {
+    this.resetFilter();
     this.selectedMatchTab = 1;
     if (userId) {
       this._matchService.getMatchesByUser(userId)
@@ -59,6 +65,7 @@ export class MatchListComponent implements OnInit {
   }
 
   loadUserMatches() {
+    this.resetFilter();
     this.selectedMatchTab = 2;
     this._userService.getUser()
       .then(prop => {
@@ -77,6 +84,86 @@ export class MatchListComponent implements OnInit {
           this.matches = null;
         }
       });
+  }
+
+  filter() {
+    if (this.selectedMatchTab === 1) {
+      this._matchService.getMatches()
+        .subscribe(
+          badmintonMatches => {
+            this.matches = badmintonMatches;
+            this.convertToMinutes();
+            this.filterInput();
+          },
+          error => {
+            this.showError(error);
+          });
+    } else {
+      this._userService.getUser()
+        .then(prop => {
+          if (prop[0] && prop[1]) {
+            this._matchService.getMatchesByUser(+prop[0])
+              .subscribe(
+                badmintonMatches => {
+                  this.matches = badmintonMatches;
+                  this.convertToMinutes();
+                  this.filterInput();
+                },
+                error => {
+                  this.showError(error);
+                });
+          } else {
+            this.matches = null;
+            this.filterInput();
+          }
+        });
+    }
+  }
+
+  filterInput() {
+    const filterMatches = new Array<BadmintonMatch>();
+
+    if (this.keyBox) {
+      for (let i = 0; i < this.matches.length; i++) {
+        if (this.matches[i].id === +this.filterQuery) {
+          if (!filterMatches.includes(this.matches[i])) {
+            filterMatches.push(this.matches[i]);
+          }
+        }
+      }
+    }
+
+    if (this.nameBox) {
+      for (let i = 0; i < this.matches.length; i++) {
+        if ((this.matches[i].player1 && this.matches[i].player1.toLowerCase().includes(this.filterQuery.toLowerCase()))
+          || (this.matches[i].player2 && this.matches[i].player2.toLowerCase().includes(this.filterQuery.toLowerCase()))
+          || (this.matches[i].player3 && this.matches[i].player3.toLowerCase().includes(this.filterQuery.toLowerCase()))
+          || (this.matches[i].player4 && this.matches[i].player4.toLowerCase().includes(this.filterQuery.toLowerCase()))) {
+          if (!filterMatches.includes(this.matches[i])) {
+            filterMatches.push(this.matches[i]);
+          }
+        }
+      }
+    }
+
+    if (this.titleBox) {
+      for (let i = 0; i < this.matches.length; i++) {
+        if (this.matches[i].title.toLowerCase().includes(this.filterQuery.toLowerCase())) {
+          if (!filterMatches.includes(this.matches[i])) {
+            filterMatches.push(this.matches[i]);
+          }
+        }
+      }
+    }
+    this.matches = filterMatches;
+  }
+
+  resetFilter() {
+    this.filterQuery = '';
+    this.keyBox = true;
+    this.nameBox = true;
+    this.titleBox = true;
+    this.filter();
   }
 
   createMatch() {

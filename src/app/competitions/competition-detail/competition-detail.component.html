@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons left>
       <button ion-button left menuToggle>
         <ion-icon name="menu"></ion-icon>
@@ -556,6 +556,16 @@
         <button ion-button block color="danger" *ngIf="hasAuthority" (click)="deleteCompetition()">
           Verwijder competitiepartij
         </button>
+      </ion-row>
+    </ion-grid>
+    <ion-grid>
+      <ion-row>
+        <ion-item color="primary" text-wrap style="text-align: center">
+          Wil je andere personen op de hoogte houden van deze competitiepartij. Stuur dan de volgende sleutel naar deze persoon:
+          <br>
+          <br>
+          <p class="text text-primary" style="font-size: 30px; font-weight: bold; border: solid white 1px;">{{competition.id}}</p>
+        </ion-item>
       </ion-row>
     </ion-grid>
   </div>

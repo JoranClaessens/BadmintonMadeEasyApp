@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons left>
       <button ion-button left menuToggle>
         <ion-icon name="menu"></ion-icon>
@@ -96,16 +96,22 @@
     </div>
   </div>
 
-  <ion-card *ngIf="match && hasAuthority">
+  <ion-card *ngIf="match">
     <ion-card-header class="bme-background-dark">
       Acties
     </ion-card-header>
     <ion-card-content>
-      <div>
+      <div *ngIf="hasAuthority">
         <button ion-button block color="primary" style="font-size: 12px;" [disabled]="match.matchFinished" (click)="simulateMatch()">Simuleer wedstrijd</button>
         <button ion-button block color="secondary" style="font-size: 12px;" (click)="editMatch()">Gegevens aanpassen</button>
         <button ion-button block color="danger" style="font-size: 12px;" (click)="deleteMatch()">Verwijder wedstrijd</button>
       </div>
+      <ion-item color="primary" text-wrap style="text-align: center">
+        Wil je andere personen op de hoogte houden van deze wedstrijd. Stuur dan de volgende sleutel naar deze persoon:
+        <br>
+        <br>
+        <p class="text text-primary" style="font-size: 30px; font-weight: bold; border: solid white 1px;">{{match.id}}</p>
+      </ion-item>
     </ion-card-content>
   </ion-card>
 </ion-content>

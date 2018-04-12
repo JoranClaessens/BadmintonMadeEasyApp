@@ -1,8 +1,13 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons left>
       <button ion-button left menuToggle>
         <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button color="royal" (click)="showFilter = !showFilter">
+        Filters
       </button>
     </ion-buttons>
     <ion-title>Wedstrijden</ion-title>
@@ -25,9 +30,39 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+
+    <ng-container *ngIf="showFilter">
+      <ion-item>
+        <ion-searchbar [(ngModel)]="filterQuery" (ionInput)="filter()" placeholder="Zoek op sleutel, speler of wedstrijd..."></ion-searchbar>
+      </ion-item>
+      <ion-item-group>
+        <ion-item-divider>
+          Filter op:
+        </ion-item-divider>
+        <ion-item>
+          <ion-label>Sleutel</ion-label>
+          <ion-toggle [(ngModel)]="keyBox" (ionChange)="filter()"></ion-toggle>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Naam speler</ion-label>
+          <ion-toggle [(ngModel)]="nameBox" (ionChange)="filter()"></ion-toggle>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Titel wedstrijd</ion-label>
+          <ion-toggle [(ngModel)]="titleBox" (ionChange)="filter()"></ion-toggle>
+        </ion-item>
+      </ion-item-group>
+    </ng-container>
+
     <ion-item *ngIf="matches?.length < 1">
       Geen wedstrijden gevonden
     </ion-item>
+    <ion-item *ngIf="matches && matches.length > 0" class="alert alert-primary">
+      <strong>{{matches.length}}</strong> wedstrijd(en) gevonden!
+    </ion-item>
+
     <ion-item *ngFor="let match of matches" (click)="matchDetail(match.id)">
       <ion-grid style="margin-bottom: -10px;">
         <ion-row>
