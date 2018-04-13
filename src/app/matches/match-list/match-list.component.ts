@@ -38,7 +38,6 @@ export class MatchListComponent implements OnInit {
   }
 
   loadAllMatches(userId: number) {
-    this.resetFilter();
     this.selectedMatchTab = 1;
     if (userId) {
       this._matchService.getMatchesByUser(userId)
@@ -57,6 +56,7 @@ export class MatchListComponent implements OnInit {
           badmintonMatches => {
             this.matches = badmintonMatches;
             this.convertToMinutes();
+            this.resetFilter();
           },
           error => {
             this.showError(error);
@@ -65,7 +65,6 @@ export class MatchListComponent implements OnInit {
   }
 
   loadUserMatches() {
-    this.resetFilter();
     this.selectedMatchTab = 2;
     this._userService.getUser()
       .then(prop => {
@@ -76,6 +75,7 @@ export class MatchListComponent implements OnInit {
                 this.matches = badmintonMatches;
                 this.userMatchesCount = this.matches.length;
                 this.convertToMinutes();
+                this.resetFilter();
               },
               error => {
                 this.showError(error);
@@ -126,7 +126,7 @@ export class MatchListComponent implements OnInit {
     if (this.keyBox) {
       for (let i = 0; i < this.matches.length; i++) {
         if (this.matches[i].id === +this.filterQuery) {
-          if (!filterMatches.includes(this.matches[i])) {
+          if (filterMatches.indexOf(this.matches[i]) === -1) {
             filterMatches.push(this.matches[i]);
           }
         }
@@ -139,7 +139,7 @@ export class MatchListComponent implements OnInit {
           || (this.matches[i].player2 && this.matches[i].player2.toLowerCase().includes(this.filterQuery.toLowerCase()))
           || (this.matches[i].player3 && this.matches[i].player3.toLowerCase().includes(this.filterQuery.toLowerCase()))
           || (this.matches[i].player4 && this.matches[i].player4.toLowerCase().includes(this.filterQuery.toLowerCase()))) {
-          if (!filterMatches.includes(this.matches[i])) {
+          if (filterMatches.indexOf(this.matches[i]) === -1) {
             filterMatches.push(this.matches[i]);
           }
         }
@@ -149,7 +149,7 @@ export class MatchListComponent implements OnInit {
     if (this.titleBox) {
       for (let i = 0; i < this.matches.length; i++) {
         if (this.matches[i].title.toLowerCase().includes(this.filterQuery.toLowerCase())) {
-          if (!filterMatches.includes(this.matches[i])) {
+          if (filterMatches.indexOf(this.matches[i]) === -1) {
             filterMatches.push(this.matches[i]);
           }
         }

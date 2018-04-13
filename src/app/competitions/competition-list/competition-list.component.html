@@ -5,6 +5,11 @@
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
+    <ion-buttons end>
+      <button ion-button color="royal" (click)="showFilter = !showFilter">
+        Filters
+      </button>
+    </ion-buttons>
     <ion-title>Competitiepartijen</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -25,9 +30,39 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+
+    <ng-container *ngIf="showFilter">
+      <ion-item>
+        <ion-searchbar [(ngModel)]="filterQuery" (ionInput)="filter()" placeholder="Zoek op sleutel, speler of wedstrijd..."></ion-searchbar>
+      </ion-item>
+      <ion-item-group>
+        <ion-item-divider>
+          Filter op:
+        </ion-item-divider>
+        <ion-item>
+          <ion-label>Sleutel</ion-label>
+          <ion-toggle [(ngModel)]="keyBox" (ionChange)="filter()"></ion-toggle>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Team</ion-label>
+          <ion-toggle [(ngModel)]="teamBox" (ionChange)="filter()"></ion-toggle>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Titel competitiepartij</ion-label>
+          <ion-toggle [(ngModel)]="titleBox" (ionChange)="filter()"></ion-toggle>
+        </ion-item>
+      </ion-item-group>
+    </ng-container>
+
     <ion-item *ngIf="competitions?.length < 1">
       Geen competitiepartijen gevonden
     </ion-item>
+    <ion-item *ngIf="competitions && competitions.length > 0" class="alert alert-primary">
+      <strong>{{competitions.length}}</strong> competitiepartij(en) gevonden!
+    </ion-item>
+
     <ion-item *ngFor="let competition of competitions" (click)="competitionDetail(competition.id)">
       <ion-grid style="margin-bottom: -10px;">
         <ion-row>

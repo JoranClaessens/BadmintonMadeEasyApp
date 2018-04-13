@@ -114,4 +114,16 @@
       </ion-item>
     </ion-card-content>
   </ion-card>
+  <ion-card *ngIf="match?.street || match?.city || match?.terrainNumber">
+    <ion-card-header class="bme-background-dark">
+      Locatie
+    </ion-card-header>
+    <ion-card-content>
+      <div>
+        <p *ngIf="match.street">{{match.street}}</p>
+        <p *ngIf="match.city">{{match.city}}</p>
+        <p *ngIf="match.terrainNumber">Terrein {{match.terrainNumber}}</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

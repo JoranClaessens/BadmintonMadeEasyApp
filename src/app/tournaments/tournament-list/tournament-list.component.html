@@ -5,6 +5,11 @@
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
+    <ion-buttons end>
+      <button ion-button color="royal" (click)="showFilter = !showFilter">
+        Filters
+      </button>
+    </ion-buttons>
     <ion-title>Toernooien</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -25,9 +30,34 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+
+    <ng-container *ngIf="showFilter">
+      <ion-item>
+        <ion-searchbar [(ngModel)]="filterQuery" (ionInput)="filter()" placeholder="Zoek op sleutel, speler of wedstrijd..."></ion-searchbar>
+      </ion-item>
+      <ion-item-group>
+        <ion-item-divider>
+          Filter op:
+        </ion-item-divider>
+        <ion-item>
+          <ion-label>Sleutel</ion-label>
+          <ion-toggle [(ngModel)]="keyBox" (ionChange)="filter()"></ion-toggle>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Titel toernooi</ion-label>
+          <ion-toggle [(ngModel)]="titleBox" (ionChange)="filter()"></ion-toggle>
+        </ion-item>
+      </ion-item-group>
+    </ng-container>
+
     <ion-item *ngIf="tournaments?.length < 1">
       Geen toernooien gevonden
     </ion-item>
+    <ion-item *ngIf="tournaments && tournaments.length > 0" class="alert alert-primary">
+      <strong>{{tournaments.length}}</strong> toernooi(en) gevonden!
+    </ion-item>
+
     <ion-item *ngFor="let tournament of tournaments" (click)="tournamentDetail(tournament.id)">
       <h1>{{tournament.title}}</h1>
       <p>{{tournament.startDate | date : 'dd/MM/yyyy'}} - {{tournament.endDate | date : 'dd/MM/yyyy'}}</p>

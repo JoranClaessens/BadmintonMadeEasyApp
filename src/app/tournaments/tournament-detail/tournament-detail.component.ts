@@ -140,7 +140,7 @@ export class TournamentDetailComponent implements OnInit {
   }
 
   getPlayer(round: number, match: number, position: number): string {
-    if (this.tournament.type === 'MEN_SINGLE' || this.tournament.type === 'WOMEN SINGLE') {
+    if (this.tournament.type === 'MEN_SINGLE' || this.tournament.type === 'WOMEN_SINGLE') {
       for (let i = 0; i < this.tournament.players.length; i++) {
         if (round === this.tournament.players[i].round && match === Math.ceil(this.tournament.players[i].position / 2) &&
           position === this.tournament.players[i].position % 2) {
@@ -159,7 +159,7 @@ export class TournamentDetailComponent implements OnInit {
   }
 
   getMatch(player1: string, player2: string, player3: string, player4: string): BadmintonMatch {
-    if (this.tournament.type === 'MEN_SINGLE' || this.tournament.type === 'WOMEN SINGLE') {
+    if (this.tournament.type === 'MEN_SINGLE' || this.tournament.type === 'WOMEN_SINGLE') {
       for (let i = 0; i < this.tournament.matches.length; i++) {
         if (player1 && player2 && this.tournament.matches[i].player1 && this.tournament.matches[i].player2) {
           if (this.tournament.matches[i].player1 === player1 && this.tournament.matches[i].player2 === player2) {
@@ -224,7 +224,7 @@ export class TournamentDetailComponent implements OnInit {
   scheduleTournament() {
     this.tournament.scheduled = true;
     for (let i = 1; i <= this.getMatchRounds(1).length; i++) {
-      if (this.tournament.type === 'MEN_SINGLE' || this.tournament.type === 'WOMEN SINGLE') {
+      if (this.tournament.type === 'MEN_SINGLE' || this.tournament.type === 'WOMEN_SINGLE') {
         if (!this.getPlayer(1, i, 1) && this.getPlayer(1, i, 0)) {
           this.tournament.players.push(new TournamentPlayer(this.getPlayer(1, i, 0), 2, i));
         } else if (this.getPlayer(1, i, 1) && !this.getPlayer(1, i, 0)) {

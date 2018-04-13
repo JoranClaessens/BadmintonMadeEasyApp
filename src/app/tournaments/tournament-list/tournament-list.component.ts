@@ -12,6 +12,10 @@ import { TournamentDetailComponent } from '../tournament-detail/tournament-detai
 })
 export class TournamentListComponent implements OnInit {
   loggedIn = false;
+  showFilter = false;
+  keyBox = true;
+  titleBox = true;
+  filterQuery: string;
   selectedTournamentTab: number;
   userTournamentsCount = 0;
   tournaments: Tournament[];
@@ -49,6 +53,7 @@ export class TournamentListComponent implements OnInit {
         .subscribe(
           tournaments => {
             this.tournaments = tournaments;
+            this.resetFilter();
           },
           error => {
             this.showError(error);
@@ -66,6 +71,7 @@ export class TournamentListComponent implements OnInit {
               tournaments => {
                 this.tournaments = tournaments;
                 this.userTournamentsCount = this.tournaments.length;
+                this.resetFilter();
               },
               error => {
                 this.showError(error);
@@ -87,8 +93,72 @@ export class TournamentListComponent implements OnInit {
       });
   }
 
+  filter() {
+    if (this.selectedTournamentTab === 1) {
+      this._tournamentService.getTournaments()
+        .subscribe(
+          tournaments => {
+            this.tournaments = tournaments;
+            this.filterInput();
+          },
+          error => {
+            this.showError(error);
+          });
+    } else {
+      this._userService.getUser()
+        .then(prop => {
+          if (prop[0] && prop[1]) {
+            this._tournamentService.getTournamentsByUser(+prop[0])
+              .subscribe(
+                tournaments => {
+                  this.tournaments = tournaments;
+                  this.filterInput();
+                },
+                error => {
+                  this.showError(error);
+                });
+          } else {
+            this.tournaments = null;
+            this.filterInput();
+          }
+        });
+    }
+  }
+
+  filterInput() {
+    const filterTournaments = new Array<Tournament>();
+
+    if (this.keyBox) {
+      for (let i = 0; i < this.tournaments.length; i++) {
+        if (this.tournaments[i].id === +this.filterQuery) {
+          if (filterTournaments.indexOf(this.tournaments[i]) === -1) {
+            filterTournaments.push(this.tournaments[i]);
+          }
+        }
+      }
+    }
+
+    if (this.titleBox) {
+      for (let i = 0; i < this.tournaments.length; i++) {
+        if (this.tournaments[i].title.toLowerCase().includes(this.filterQuery.toLowerCase())) {
+          if (filterTournaments.indexOf(this.tournaments[i]) === -1) {
+            filterTournaments.push(this.tournaments[i]);
+          }
+        }
+      }
+    }
+    this.tournaments = filterTournaments;
+  }
+
+  resetFilter() {
+    this.filterQuery = '';
+    this.keyBox = true;
+    this.titleBox = true;
+    this.filter();
+  }
+
   tournamentDetail(id: number) {
-    this._nav.push(TournamentDetailComponent, { 'id': id} );
+    this._nav.push(TournamentDetailComponent, { 'id': id });
   }
 
   swipeEvent(e) {
