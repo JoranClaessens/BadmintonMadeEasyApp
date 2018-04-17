@@ -7,7 +7,7 @@ import { BadmintonMatch } from '../matches/badminton-match';
 
 @Injectable()
 export class TournamentService {
-    private tournamentUrl = 'http://192.168.0.184:8080/api/tournaments';
+    private tournamentUrl = 'http://localhost:8080/api/tournaments';
 
     constructor(private _http: Http) { }
 

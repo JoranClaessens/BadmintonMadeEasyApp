@@ -7,7 +7,7 @@ import { Http } from '@angular/http';
 
 @Injectable()
 export class CompetitionService {
-    private competitionUrl = 'http://192.168.0.184:8080/api/competitions';
+    private competitionUrl = 'http://localhost:8080/api/competitions';
 
     constructor(private _http: Http) { }
 
